@@ -13,12 +13,15 @@ namespace 自动收获
 	public class 自动收获
 	{
 		static bool init=false;
-		private static void Prefix(ref GameObject template, ref float max_age, string crop_id, ref bool can_tinker, ref float temperature_lethal_low, ref float temperature_warning_low, ref float temperature_warning_high, ref float temperature_lethal_high, ref bool pressure_sensitive)
+		private static void Prefix(ref GameObject template,ref bool should_grow_old, ref float max_age, string crop_id, ref bool can_tinker, ref float temperature_lethal_low, ref float temperature_warning_low, ref float temperature_warning_high, ref float temperature_lethal_high, ref bool pressure_sensitive)
 		{
+
+
 			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.自动收获)
 				max_age = 3;//植物自动掉落
+				should_grow_old = true;
 
-			if(PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.一键设置长周期植物)
+			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.一键设置长周期植物)
 			if (!init)
 			{
 				init = !init;

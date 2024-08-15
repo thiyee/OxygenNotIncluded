@@ -5,8 +5,7 @@ using UnityEngine;
 using HarmonyLib;
 using STRINGS;
 using System.Linq;
-
-
+using System.Reflection;
 
 namespace 动物猎场
 {
@@ -62,60 +61,62 @@ namespace 动物猎场
 		}
 		public void OnCreatureOnTrap(object data)
 		{
-
-			if (this.CreatureKiller)
-			{
-				CreatureKillerSM creatureKillerSM = this.CreatureKiller.GetComponent<CreatureKillerSM>();
-				Operational operational = this.CreatureKiller.GetComponent<Operational>();
-				if (!operational.IsOperational)
+            try
+            {
+				if (this.CreatureKiller)
 				{
+					CreatureKillerSM creatureKillerSM = this.CreatureKiller.GetComponent<CreatureKillerSM>();
+					Operational operational = this.CreatureKiller.GetComponent<Operational>();
+					if (!operational.IsOperational)
+					{
+						return;
+					}
+				}
+				Trappable trappable = (Trappable)data;
+				if (!trappable.HasTag(GameTags.Creature)){
+					Console.WriteLine("Trap non Creature " + trappable.name);
 					return;
 				}
-			}
-			Trappable trappable = (Trappable)data;
-			//trappable = null;
-			Debug.Log("trap:" + trappable.gameObject.name);
-			if (trappable.HasTag(GameTags.Stored))
-			{
-				return;
-			}
-			if (trappable.HasTag(GameTags.Trapped))
-			{
-				return;
-			}
-			if (trappable.HasTag(GameTags.Creatures.Bagged))
-			{
-				return;
-			}
-			bool flag = false;
-			foreach (Tag tag in this.killableCreatures)
-			{
-				if (trappable.HasTag(tag))
-				{
-					flag = true;
-					break;
+				Butcherable butcherable;
+				if (trappable.gameObject==null) {
+
+					Console.WriteLine("Trap114 " + trappable.name);
+					string sztag = "tag:";
+					KPrefabID cm=trappable.GetComponent<KPrefabID>();
+					var fieldInfo = typeof(KPrefabID).GetField("tags", BindingFlags.NonPublic | BindingFlags.Instance);
+					HashSet<Tag> tags = (HashSet<Tag>)fieldInfo.GetValue(cm);
+					foreach(Tag tag in tags){
+						sztag += tag;
+					}
+					Console.WriteLine(sztag);
+					return;
 				}
+				if(trappable.gameObject.TryGetComponent<Butcherable>(out butcherable)){
+					foreach(string drop in butcherable.drops){
+						GameObject gameObject = Scenario.SpawnPrefab(Grid.PosToCell(GetDropSpawnLocation()), 0, 0, drop, Grid.SceneLayer.Ore);
+						gameObject.SetActive(true);
+						Edible component2 = gameObject.GetComponent<Edible>();
+						if (component2)
+						{
+							ReportManager.Instance.ReportValue(ReportManager.ReportType.CaloriesCreated, component2.Calories, StringFormatter.Replace(UI.ENDOFDAYREPORT.NOTES.BUTCHERED, "{0}", gameObject.GetProperName()), UI.ENDOFDAYREPORT.NOTES.BUTCHERED_CONTEXT);
+						}
+						this.storage.Store(gameObject, true, false, true, false);
+						SetStoredPosition(gameObject);
+					}
+                }
+				trappable.gameObject.DeleteObject();
 			}
-			if (!flag)
-			{
-				return;
+            catch(NullReferenceException ex){
+				Console.WriteLine(ex.Message);
+				Console.WriteLine(ex.StackTrace);
+
+				// 如果想要进一步分析StackTrace，可以解析它
+				// 通常情况下，StackTrace的第一行会是发生异常的实际代码行
+				string[] stackTraceLines = ex.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+				string errorLine = stackTraceLines[0]; // 第一行通常是错误行
+				Console.WriteLine("错误发生在: " + errorLine);
 			}
 
-			string[] drops = trappable.gameObject.GetComponent<Butcherable>().drops;
-			for (int i = 0; i < drops.Length; i++)
-			{
-				GameObject gameObject = Scenario.SpawnPrefab(Grid.PosToCell(GetDropSpawnLocation()), 0, 0, drops[i], Grid.SceneLayer.Ore);
-				gameObject.SetActive(true);
-				Edible component2 = gameObject.GetComponent<Edible>();
-				if (component2)
-				{
-					ReportManager.Instance.ReportValue(ReportManager.ReportType.CaloriesCreated, component2.Calories, StringFormatter.Replace(UI.ENDOFDAYREPORT.NOTES.BUTCHERED, "{0}", gameObject.GetProperName()), UI.ENDOFDAYREPORT.NOTES.BUTCHERED_CONTEXT);
-				}
-				this.storage.Store(gameObject, true, false, true, false);
-				SetStoredPosition(gameObject);
-			}
-
-			trappable.gameObject.DeleteObject();
 		}
 
 		protected override void OnCleanUp()
@@ -190,13 +191,6 @@ namespace 动物猎场
 			storage.SetDefaultStoredItemModifiers(CreatureKillerConfig.StoredItemModifiers);
 			storage.sendOnStoreOnSpawn = true;
 			KillerTrigger trapTrigger = go.AddOrGet<KillerTrigger>();
-			trapTrigger.killableCreatures = new Tag[]
-			{
-		GameTags.Creatures.Walker,
-		GameTags.Creatures.Hoverer,
-		GameTags.Creatures.Flyer,
-		GameTags.Creatures.Swimmer
-			};
 			trapTrigger.CreatureKiller = go;
 			// 添加 DropAllWorkable 组件
 			DropAllWorkable dropAllWorkable = go.AddOrGet<DropAllWorkable>();

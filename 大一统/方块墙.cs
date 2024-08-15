@@ -115,6 +115,8 @@ namespace 方块墙
 				}
 			}
 		}
+
 		public const string ID = "方块墙";
-	}
+
+    }
 }

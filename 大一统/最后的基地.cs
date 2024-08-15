@@ -18,10 +18,20 @@ namespace 最后的基地
 		}
 	}
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-	[HarmonyPatch(typeof(HeadquartersConfig), "ConfigureBuildingTemplate")]
+	[HarmonyPatch(typeof(HeadquartersConfig), "DoPostConfigureComplete")]
 	public class 打印舱添加新的物品{
 		private static void Postfix(ref GameObject go){
 			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.最后的基地){
+				CellOffset cellOffset = new CellOffset(0, 1);
+				ElementEmitter elementEmitter = go.AddOrGet<ElementEmitter>();
+				elementEmitter.outputElement = new ElementConverter.OutputElement(0.5f, SimHashes.Oxygen, 303.15f, false, false, (float)cellOffset.x, (float)cellOffset.y, 1f, byte.MaxValue, 0, true);
+				elementEmitter.emissionFrequency = 1f;
+				elementEmitter.maxPressure = 2.5f;
+				DevGenerator devGenerator = go.AddOrGet<DevGenerator>();
+				devGenerator.powerDistributionOrder = 9;
+				devGenerator.wattageRating = 1000f;
+
+
 				go.AddOrGet<DropAllWorkable>();
 				go.AddOrGet<BuildingComplete>().isManuallyOperated = false;
 				ComplexFabricator complexFabricator = go.AddOrGet<ComplexFabricator>();
@@ -61,22 +71,47 @@ namespace 最后的基地
 					"ToePlantSeed".ToTag(),						  //"安止宁种子",
 					"WineCupsSeed".ToTag(),						  //"醇锦菇种子",
 					"WormPlantSeed".ToTag(),                      //"虫果种子"
-					"Hatch".ToTag(),							  //哈奇
-					"LightBug".ToTag(),							  //发光虫
-					"OilFloater".ToTag(),						  //浮游生物
-					"Drecko".ToTag(),							  //
-					"Glom".ToTag(),								  //
-					"Puft".ToTag(),								  //
-					"Pacu".ToTag(),								  //帕库鱼
-					"Moo".ToTag(),								  //
-					"Mole".ToTag(),								  //
-					"Squirrel".ToTag(),							  //
-					"Crab".ToTag(),								  //
-					"Staterpillar".ToTag(),						  //
-					"BeeBaby".ToTag(),							  //
-					"DivergentBeetle".ToTag(),					  //
+"StaterpillarLiquidEgg".ToTag(),
+"StaterpillarGasEgg".ToTag(),
+"StaterpillarEgg".ToTag(),
+"SquirrelHugEgg".ToTag(),
+"SquirrelEgg".ToTag(),
+"DreckoEgg".ToTag(),
+"DreckoPlasticEgg".ToTag(),
+"LightBugBlackEgg".ToTag(),
+"LightBugBlueEgg".ToTag(),
+"LightBugEgg".ToTag(),
+"LightBugCrystalEgg".ToTag(),
+"LightBugOrangeEgg".ToTag(),
+"LightBugPinkEgg".ToTag(),
+"LightBugPurpleEgg".ToTag(),
+"MoleEgg".ToTag(),
+"MoleDelicacyEgg".ToTag(),
+"OilfloaterEgg".ToTag(),
+"OilfloaterDecorEgg".ToTag(),
+"OilfloaterHighTempEgg".ToTag(),
+"PuftAlphaEgg".ToTag(),
+"PuftBleachstoneEgg".ToTag(),
+"PuftEgg".ToTag(),
+"PuftOxyliteEgg".ToTag(),
+"HatchVeggieEgg".ToTag(),
+"HatchMetalEgg".ToTag(),
+"PacuCleanerEgg".ToTag(),
+"DivergentWormEgg".ToTag(),
+"DivergentBeetleEgg".ToTag(),
+"HatchEgg".ToTag(),
+"CrabWoodEgg".ToTag(),
+"HatchHardEgg".ToTag(),
+"CrabFreshWaterEgg".ToTag(),
+"CrabEgg".ToTag(),
+"PacuEgg".ToTag(),
+"PacuTropicalEgg".ToTag(),
 					"OrbitalResearchDataBank".ToTag()
 				};
+
+
+
+
 				String[] strings = new String[] {
 				"顶针芦苇种子",
 				"米虱木种子",
@@ -109,9 +144,11 @@ namespace 最后的基地
 				foreach (Tag tag in tags){
 					Element element = ElementLoader.FindElementByHash((SimHashes)SimHashes.Niobium);
 					ComplexRecipe.RecipeElement[] array1 = new ComplexRecipe.RecipeElement[] { new ComplexRecipe.RecipeElement(element.tag, 1000f) };
+
 					ComplexRecipe.RecipeElement[] array2; 
 					if (tag != "OrbitalResearchDataBank".ToTag()) array2 = new ComplexRecipe.RecipeElement[] { new ComplexRecipe.RecipeElement(tag, 1f,false) };
 					else array2 = new ComplexRecipe.RecipeElement[] { new ComplexRecipe.RecipeElement(tag, 100f, false) };
+
 					string obsolete_id = ComplexRecipeManager.MakeObsoleteRecipeID("Headquarters", array1[0].material);
 					string text = ComplexRecipeManager.MakeRecipeID("Headquarters", array1, array2);
 					ComplexRecipe complexRecipe = new ComplexRecipe(text, array1, array2);
@@ -139,21 +176,5 @@ namespace 最后的基地
 				__result.ViewMode = OverlayModes.Power.ID;
 			}
 		} 
-	}
-	[HarmonyPatch(typeof(HeadquartersConfig), "ConfigureBuildingTemplate")]
-	public class 最后的基地2
-	{
-		private static void Postfix(ref GameObject go, ref Tag prefab_tag){
-			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.最后的基地){
-				CellOffset cellOffset = new CellOffset(0, 1);
-				ElementEmitter elementEmitter = go.AddOrGet<ElementEmitter>();
-				elementEmitter.outputElement = new ElementConverter.OutputElement(0.5f, SimHashes.Oxygen, 303.15f, false, false, (float)cellOffset.x, (float)cellOffset.y, 1f, byte.MaxValue, 0, true);
-				elementEmitter.emissionFrequency = 1f;
-				elementEmitter.maxPressure = 2.5f;
-				DevGenerator devGenerator = go.AddOrGet<DevGenerator>();
-				devGenerator.powerDistributionOrder = 9;
-				devGenerator.wattageRating = 1000f;
-			}
-		}
 	}
 }

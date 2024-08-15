@@ -18,7 +18,6 @@ namespace 强制建造
 		{
 			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.强制建造)
 				if (((int)GetAsyncKeyState(VK_SHIFT) & KEY_PRESSED) != 0) __result = true;
-			Console.WriteLine("IsAreaClear hook!");
 		}
 
 		public 强制建造(){
@@ -26,7 +25,6 @@ namespace 强制建造
 			Harmony harmony = new Harmony("强制建造");
 			foreach (MethodInfo methodInfo in IsAreaClear){
 				harmony.Patch(methodInfo, postfix: new HarmonyMethod(typeof(强制建造), nameof(Postfix)));
-				Console.WriteLine("Patch " + methodInfo.Name);
 			}
 
 

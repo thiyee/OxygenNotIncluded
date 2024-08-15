@@ -25,7 +25,7 @@ namespace 真荧光棒
 					newEmitter.emitRadiusX = (short)PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.荧光棒范围;
 					newEmitter.emitRadiusY = (short)PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.荧光棒范围;
 				}
-
+			
 			}
 		}
 

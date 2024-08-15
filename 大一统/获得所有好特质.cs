@@ -15,16 +15,16 @@ namespace 获得所有好特质
 				{
 					__instance.Traits.RemoveAll(i => i.Id == traitVal1.id);
 				}
-
+	
 				foreach (DUPLICANTSTATS.TraitVal traitVal2 in DUPLICANTSTATS.GOODTRAITS)
 				{
 					Trait item2 = Db.Get().traits.TryGet(traitVal2.id);
-					if ( (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.真荧光棒|| traitVal2.id != "GlowStick") && traitVal2.id != "Uncultured")
+					if ( ( traitVal2.id != "GlowStick") && traitVal2.id != "Uncultured")
 					{
 						if (!item2.IsNullOrDestroyed())
 							__instance.Traits.Add(item2);
 					}
-
+	
 				}
 				foreach (DUPLICANTSTATS.TraitVal traitVal3 in DUPLICANTSTATS.GENESHUFFLERTRAITS)
 				{
@@ -39,7 +39,7 @@ namespace 获得所有好特质
 						__instance.Traits.Add(item4);
 				}
 			}
-
+	
 		}
 	}
 }

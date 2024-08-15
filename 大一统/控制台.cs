@@ -8,8 +8,8 @@ namespace 大一统{
     [JsonObject(MemberSerialization.OptIn)]
     [ConfigFile("大一统控制台.json", true, true)]
     [RestartRequired]
-    public class 大一统控制台UI : SingletonOptions<大一统控制台UI>
-    {
+    public class 大一统控制台UI : SingletonOptions<大一统控制台UI>{
+        
         [Option("更多泉与火山", "在创建新地图时生效 生成以下火山/泉 \n铀火山;钢火山;玻璃火山;超冷泉;石油泉;液磷泉;碳火山;蔗糖泉 ", "地图特质")] [JsonProperty] public bool 更多泉与火山 { get; set; }
         [Option("末日浩劫", "陨石群在星图上的移动速度-90%", "地图特质")] [JsonProperty] public bool 末日浩劫 { get; set; }
         [Option("虚空入侵", "在创建新地图时生效 随机替换初始生态以外的生态为太空暴露", "地图特质")] [JsonProperty] public bool 虚空入侵 { get; set; }
@@ -36,7 +36,7 @@ namespace 大一统{
         [Option("蒸汽时代", "蒸汽机能吸取速度*5 过热温度=200℃ 发热降低90%", "新建筑特性")] [JsonProperty] public bool 蒸汽时代 { get; set; }
         [Option("强制隔热", "隔热砖 液体/气体管道 不发生热交换", "新建筑特性")] [JsonProperty] public bool 强制隔热 { get; set; }
         
-        [Option("捕捉飞行动物和鱼", "", "功能性修改")] [JsonProperty] public bool 捕捉飞行动物和鱼 { get; set; }
+        //[Option("捕捉飞行动物和鱼", "", "功能性修改")] [JsonProperty] public bool 捕捉飞行动物和鱼 { get; set; }
         [Option("动物更耐高低温", "比原来更耐热/耐寒", "功能性修改")] [JsonProperty] public bool 动物更耐高低温 { get; set; }
         [Option("辐射蜂巢耐热", "辐射蜂巢能在常温下生存", "功能性修改")] [JsonProperty] public bool 辐射蜂巢耐热 { get; set; }
         [Option("动物无限繁殖", "动物不会拥挤和封闭", "功能性修改")] [JsonProperty] public bool 动物无限繁殖 { get; set; }
@@ -47,7 +47,9 @@ namespace 大一统{
         [Option("无限拖把", "拖把无视液体质量", "功能性修改")] [JsonProperty] public bool 无限拖把 { get; set; }
         [Option("自动收获", "植物成熟后自动掉落", "功能性修改")] [JsonProperty] public bool 自动收获 { get; set; }
         [Option("强制建造", "按住SHIFT键强制部署建造蓝图", "功能性修改")] [JsonProperty] public bool 强制建造 { get; set; }
-        //[Option("超时空传送", "复制人的任意移动将更改为瞬间抵达目的地", "功能性修改")] [JsonProperty] public bool 超时空传送 { get; set; }
+        [Option("超时空传送", "复制人可以瞬间到达可到达的地点", "功能性修改")] [JsonProperty] public bool 超时空传送 { get; set; }
+        [Option("铁砂掌", "复制人拾起的东西在放下前不会发生换热", "功能性修改")] [JsonProperty] public bool 铁砂掌 { get; set; }
+        [Option("祖宗人", "复制人无视外部极端环境", "功能性修改")] [JsonProperty] public bool 祖宗人 { get; set; }
 
 
 
@@ -57,8 +59,8 @@ namespace 大一统{
         [Option("活跃期占比", "活跃时间/休眠时间", "属性控制", Format = "F2")] [Limit(0.0, 1.0)] [JsonProperty] public float 活跃期占比 { get; set; }
         [Option("动物驯化速度", "加速/减速以任何形式对动物的驯化速度", "属性控制", Format = "F2")] [Limit(0.0, 10.0)] [JsonProperty] public float 驯化速度 { get; set; }
         [Option("植物生长速度", "加速/减速任何植物的生长速度", "属性控制", Format = "F2")] [Limit(0.0, 10.0)] [JsonProperty] public float 植物生长速度 { get; set; }
-        [Option("动物产蛋速度", "加速/减速任何驯养并快乐的动物的产蛋速度", "属性控制", Format = "F2")] [Limit(0.0, 10.0)] [JsonProperty] public float 动物产蛋速度 { get; set; }
-        [Option("孵化速度", "加速/减速任何蛋的孵化速度", "属性控制", Format = "F2")] [Limit(0.0, 10.0)] [JsonProperty] public float 孵化速度 { get; set; }
+        [Option("动物产蛋速度", "加速被驯化的动物的产蛋速度", "属性控制", Format = "F2")] [Limit(0.0, 1000.0)] [JsonProperty] public float 动物产蛋速度 { get; set; }
+        [Option("孵化速度", "加速/减速任何蛋的孵化速度", "属性控制", Format = "F2")] [Limit(0.0, 1000.0)] [JsonProperty] public float 孵化速度 { get; set; }
         [Option("一键设置长周期植物", "小吃豆小麦等长周期植物 生长周期-75% 果实-50%", "属性控制")] [JsonProperty] public bool 一键设置长周期植物 { get; set; }
         [Option("物质导热系数", "实际导热率=原导热率*物质导热系数", "属性控制", Format = "F2")] [Limit(1.0, 1000.0)] [JsonProperty] public float 物质导热系数 { get; set; }
         [Option("最低结块质量", "当结块质量小于最低结块质量时 实际结块质量为最低结块质量", "属性控制", Format = "F2")] [Limit(0.0, 10000.0)] [JsonProperty] public float 最低结块质量 { get; set; }
@@ -70,68 +72,70 @@ namespace 大一统{
         //[Option("小人工作范围", "控制小人挖掘 建造 操作等范围 \n该属性在原有工作距离上增加", "属性控制")] [Limit(0, 10)] [JsonProperty] public int 小人工作范围 { get; set; }
         [Option("小人工作速度", "控制小人工作速度 数值越大 工作速度越快", "属性控制")] [Limit(0, 10)] [JsonProperty] public int 小人工作速度 { get; set; }
 
-        [Option("真·荧光棒", "开启 使生成的小人带有荧光棒属性", "属性控制")] [JsonProperty] public bool 真荧光棒 { get; set; }
-        [Option("荧光棒强度", "调整荧光棒辐射强度 (真·荧光棒启用时生效)", "属性控制")] [Limit(1, 1000000)] [JsonProperty] public float 荧光棒强度 { get; set; }
-        [Option("荧光棒范围", "调整荧光棒辐射范围 (真·荧光棒启用时生效)", "属性控制")] [Limit(3, short.MaxValue)] [JsonProperty] public int 荧光棒范围 { get; set; }
+        //[Option("真·荧光棒", "开启 使生成的小人带有荧光棒属性", "属性控制")] [JsonProperty] public bool 真荧光棒 { get; set; }
+        //[Option("荧光棒强度", "调整荧光棒辐射强度 (真·荧光棒启用时生效)", "属性控制")] [Limit(1, 1000000)] [JsonProperty] public float 荧光棒强度 { get; set; }
+        //[Option("荧光棒范围", "调整荧光棒辐射范围 (真·荧光棒启用时生效)", "属性控制")] [Limit(3, short.MaxValue)] [JsonProperty] public int 荧光棒范围 { get; set; }
 
         public 大一统控制台UI()
         {
-            this.按摩床恢复速度 = true;
-            this.捕捉飞行动物和鱼 = true;
-            this.超视望远镜 = true;
-            this.动物更耐高低温 = true;
-            this.动物无限繁殖 = true;
-            this.方块墙 = true;
-            this.自动挖掘墙 = true;
-            this.动物猎场 = true;
-            this.中子湮灭发生器 = true;
-            this.辐射蜂巢耐热 = true;
-            this.改造储气液库 = true;
-            this.改造液氢引擎 = true;
-            this.高频电炉 = true;
-            this.更多泉与火山 = true;
-            this.获得所有好特质 = true;
-            this.精准采集 = true;
-            this.冷光吸顶灯 = true;
-            this.末日浩劫 = true;
-            this.树鼠种植密度 = true;
-            this.无级变速 = true;
-            this.无限拖把 = true;
-            this.修改泉属性 = true;
+            this.按摩床恢复速度 = false;
+            //this.捕捉飞行动物和鱼 = false;
+            this.超视望远镜 = false;
+            this.动物更耐高低温 = false;
+            this.动物无限繁殖 = false;
+            this.方块墙 = false;
+            this.自动挖掘墙 = false;
+            this.动物猎场 = false;
+            this.中子湮灭发生器 = false;
+            this.辐射蜂巢耐热 = false;
+            this.改造储气液库 = false;
+            this.改造液氢引擎 = false;
+            this.高频电炉 = false;
+            this.更多泉与火山 = false;
+            this.获得所有好特质 = false;
+            this.精准采集 = false;
+            this.冷光吸顶灯 = false;
+            this.末日浩劫 = false;
+            this.树鼠种植密度 = false;
+            this.无级变速 = false;
+            this.无限拖把 = false;
+            this.修改泉属性 = false;
             this.喷发量 = 1f;
             this.喷发期占比=0.5f;
             this.活跃期占比 = 0.5f;
-            this.虚空入侵 = true;
+            this.虚空入侵 = false;
             this.虚空入侵程度 = 1f;
-            this.永不串气电解器 = true;
-            this.智能冰箱 = true;
-            this.自动收获 = true;
+            this.永不串气电解器 = false;
+            this.智能冰箱 = false;
+            this.自动收获 = false;
             this.强制建造= false;
-            //this.超时空传送 = true;
-            this.最后的基地 = true;
+            this.超时空传送 = false;
+            this.最后的基地 = false;
             this.驯化速度 = 1;
             this.植物生长速度 = 1;
-            this.动物产蛋速度 = 1;
+            this.动物产蛋速度 = 0;
             this.孵化速度 = 1;
-            this.一键设置长周期植物 = true;
-            this.电线穿墙 = true;
-            this.光电效应 = 10;
+            this.一键设置长周期植物 = false;
+            this.电线穿墙 = false;
+            this.光电效应 = 1;
             this.储物箱容量 = 20;
-            this.蒸汽时代 = true;
-            this.强制隔热 = true;
-            this.辐星高照 = 10f;
+            this.蒸汽时代 = false;
+            this.强制隔热 = false;
+            this.辐星高照 = 1;
             this.物质导热系数 = 1f;
             this.最低结块质量 = 500f;
-            this.物质大一统 = true;
-            this.繁茂核心 = true;
+            this.物质大一统 = false;
+            this.繁茂核心 = false;
             this.小人初始技能点 = 0;
-            this.小人初始天赋点 = 10;
+            this.小人初始天赋点 = 0;
             //this.小人工作范围 = 3;
             this.小人工作速度 = 1;
+            this.铁砂掌 = false;
+            this.祖宗人 = false;
 
-            this.真荧光棒 = true;
-            this.荧光棒强度 = 1;
-            this.荧光棒范围 = 3;
+            //this.真荧光棒 = false;
+            //this.荧光棒强度 = 1;
+            //this.荧光棒范围 = 3;
         }
     }
         class 控制台 : UserMod2{
@@ -141,9 +145,10 @@ namespace 大一统{
             new POptions().RegisterOptions(this, typeof(大一统控制台UI));
             base.OnLoad(harmony);
 
-            Strings.Add(new string[] { "STRINGS.UI.UISIDESCREENS.LIQUIDHEATERSIDESCREEN.SLIDERTITLE", "目标温度                                 发热效率" });
             强制建造.强制建造 强制建造ins = new 强制建造.强制建造();
-            真荧光棒.真荧光棒 荧光棒属性ins = new 真荧光棒.真荧光棒();
+            //真荧光棒.真荧光棒 荧光棒属性ins = new 真荧光棒.真荧光棒();
+            动物更耐高低温.动物体质增强 动物体质增强ins = new 动物更耐高低温.动物体质增强();
+            效果修改.效果修改 效果修改ins = new 效果修改.效果修改();
         }
     }
 }
