@@ -32,7 +32,8 @@ namespace 效果修改
 				bool needtoadd = !__instance.SelfModifiers.Exists(e => e.AttributeId == Db.Get().Amounts.Fertility.deltaAttribute.Id);
 				if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.动物产蛋速度 != 0 && needtoadd)
 				{
-					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Fertility.deltaAttribute.Id, PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.动物产蛋速度, STRINGS.CREATURES.MODIFIERS.RANCHED.NAME, true, false, true));
+					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Beckoning.deltaAttribute.Id, PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.动物产蛋速度 * 0.2F, STRINGS.CREATURES.MODIFIERS.AGE.NAME, false, false, true));
+					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Fertility.deltaAttribute.Id, PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.动物产蛋速度, STRINGS.CREATURES.MODIFIERS.TAME.NAME, true, false, true));
 					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Age.deltaAttribute.Id, 0.0016666667f* PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.动物产蛋速度*0.4F, STRINGS.CREATURES.MODIFIERS.AGE.NAME, false, false, true));
 
 				}

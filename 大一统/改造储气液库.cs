@@ -54,13 +54,5 @@ namespace 改造储气液库
 			}
 		}
 	}
-	[HarmonyPatch(typeof(PrimaryElement), MethodType.Constructor)]
-	public class 更大团物质
-	{
-		private static void Prefix(ref float ___MAX_MASS)
-		{
-			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.改造储气液库)
-				___MAX_MASS = 1000000f;
-		}
-	}
+
 }

@@ -233,13 +233,50 @@ namespace 更多泉与火山
 					ProcGen.World.TemplateSpawnRules templateSpawnRules = new ProcGen.World.TemplateSpawnRules();
 					List<AllowedCellsFilter> allowedCellsFilterList = new List<AllowedCellsFilter>() { new AllowedCellsFilter() , new AllowedCellsFilter() , new AllowedCellsFilter() };
 
-					AllowedCellsFilterReflectionHelper.SetPrivateProperties(allowedCellsFilterList[0], TagCommand.DistanceFromTag,"AtStart",2,100,Command.Replace,new List<Temperature.Range>(), new List<SubWorld.ZoneType>(),new List<string>());
+					AllowedCellsFilterReflectionHelper.SetPrivateProperties(allowedCellsFilterList[0],
+						TagCommand.DistanceFromTag,
+						"AtStart",
+						2,
+						200,
+						Command.Replace,
+						new List<Temperature.Range>(),
+						new List<SubWorld.ZoneType>(),
+						new List<string>());
 					//虚空入侵时 允许火山生成在太空暴露的生态中
-					if ((PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.虚空入侵)) AllowedCellsFilterReflectionHelper.SetPrivateProperties(allowedCellsFilterList[1], TagCommand.Default, "", 0, 0, Command.ExceptWith, new List<Temperature.Range>(), new List<SubWorld.ZoneType> { SubWorld.ZoneType.RocketInterior }, new List<string>());
+					if ((PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.虚空入侵)) 
+							AllowedCellsFilterReflectionHelper.SetPrivateProperties(
+								allowedCellsFilterList[1], 
+								TagCommand.Default, 
+								"", 
+								0, 
+								0, 
+								Command.ExceptWith, 
+								new List<Temperature.Range>(), 
+								new List<SubWorld.ZoneType> { SubWorld.ZoneType.RocketInterior }, 
+								new List<string>());
 					//否则 火山不允许生成在太空暴露生态
-					else AllowedCellsFilterReflectionHelper.SetPrivateProperties(allowedCellsFilterList[1], TagCommand.Default, "", 0, 0, Command.ExceptWith, new List<Temperature.Range>(), new List<SubWorld.ZoneType> { SubWorld.ZoneType.Space }, new List<string>());
+					else 
+							AllowedCellsFilterReflectionHelper.SetPrivateProperties(
+								allowedCellsFilterList[1], 
+								TagCommand.Default, 
+								"", 
+								0, 
+								0, 
+								Command.ExceptWith, 
+								new List<Temperature.Range>(), 
+								new List<SubWorld.ZoneType> { SubWorld.ZoneType.Space }, 
+								new List<string>());
 					
-					AllowedCellsFilterReflectionHelper.SetPrivateProperties(allowedCellsFilterList[2], TagCommand.AtTag, "NoGlobalFeatureSpawning", 0,0, Command.ExceptWith, new List<Temperature.Range>(), new List<SubWorld.ZoneType>(), new List<string>());
+					AllowedCellsFilterReflectionHelper.SetPrivateProperties(
+						allowedCellsFilterList[2], 
+						TagCommand.AtTag, 
+						"NoGlobalFeatureSpawning", 
+						0,
+						0, 
+						Command.ExceptWith, 
+						new List<Temperature.Range>(), 
+						new List<SubWorld.ZoneType>(), 
+						new List<string>());
 
 					TemplateSpawnRulesReflectionHelper.SetPrivateProperties(
 						templateSpawnRules,

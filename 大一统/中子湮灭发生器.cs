@@ -10,7 +10,8 @@ namespace 中子湮灭发生器
 {
 	using System;
 	using KSerialization;
-	using UnityEngine;
+    using TUNING;
+    using UnityEngine;
 
 	// Token: 0x02000C40 RID: 3136
 	[SerializationConfig(MemberSerialization.OptIn)]
@@ -166,10 +167,11 @@ namespace 中子湮灭发生器
 		}
 	}
 
-	public class UnobtaniumAnnihilationGeneratorConfig : IBuildingConfig
+	public class 中子湮灭发生器Config : IBuildingConfig
 	{
-		// Token: 0x0600090A RID: 2314 RVA: 0x000351F4 File Offset: 0x000333F4
-		public override string[] GetDlcIds()
+        // Token: 0x0600090A RID: 2314 RVA: 0x000351F4 File Offset: 0x000333F4
+        [Obsolete]
+        public override string[] GetDlcIds()
 		{
 			return DlcManager.AVAILABLE_EXPANSION1_ONLY;
 		}
@@ -184,7 +186,7 @@ namespace 中子湮灭发生器
 			int hitpoints = 30;
 			float construction_time = 10f;
 			float[] tier = new float[] { 400f };
-			string[] raw_MINERALS = new string[] { "BuildableRaw" };
+			string[] raw_MINERALS = MATERIALS.ANY_BUILDABLE;
 			float melting_point = 1600f;
 			BuildLocationRule build_location_rule = BuildLocationRule.NotInTiles;
 			EffectorValues none = new EffectorValues { amount = 0, radius = 0 };
@@ -200,6 +202,7 @@ namespace 中子湮灭发生器
 			buildingDef.RequiresPowerInput = true;
 			buildingDef.PowerInputOffset = new CellOffset(0, 0);
 			buildingDef.EnergyConsumptionWhenActive = 2000f;
+			buildingDef.ThermalConductivity = 0f;
 			GeneratedBuildings.RegisterWithOverlay(OverlayScreen.RadiationIDs, "UnobtaniumAnnihilationGenerator");
 			buildingDef.Deprecated = !Sim.IsRadiationEnabled();
 			return buildingDef;

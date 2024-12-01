@@ -31,14 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\0Harmony.dll</HintPath>
+    <Reference Include="0Harmony, Version=2.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp.dll</HintPath>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=4.10.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeAnalysis.Common.4.10.0\lib\netstandard2.0\Microsoft.CodeAnalysis.dll</HintPath>
@@ -86,13 +89,18 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.dll</HintPath>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\..\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FieldAccess.cs" />
@@ -101,6 +109,7 @@
     <Compile Include="修改泉属性.cs" />
     <Compile Include="储物箱容量.cs" />
     <Compile Include="光电效应.cs" />
+    <Compile Include="全局建筑配置.cs" />
     <Compile Include="冷光吸顶灯.cs" />
     <Compile Include="动物无限繁殖.cs" />
     <Compile Include="动物更耐高低温.cs" />
@@ -120,11 +129,14 @@
     <Compile Include="无限拖把.cs" />
     <Compile Include="智能冰箱.cs" />
     <Compile Include="更多泉与火山.cs" />
+    <Compile Include="更大团物质.cs" />
     <Compile Include="最后的基地.cs" />
     <Compile Include="末日浩劫.cs" />
     <Compile Include="树鼠种植密度.cs" />
     <Compile Include="物质大一统.cs" />
     <Compile Include="电线穿墙.cs" />
+    <Compile Include="白嫖怪.cs" />
+    <Compile Include="种子掉落概率.cs" />
     <Compile Include="精准采集.cs" />
     <Compile Include="自动挖掘墙.cs" />
     <Compile Include="自动收获.cs" />
@@ -132,7 +144,6 @@
     <Compile Include="蒸汽科技.cs" />
     <Compile Include="虚空入侵.cs" />
     <Compile Include="超时空传送.cs" />
-    <Compile Include="超视望远镜.cs" />
     <Compile Include="辐射蜂巢耐热.cs" />
     <Compile Include="辐星高照.cs" />
     <Compile Include="铁砂掌.cs" />

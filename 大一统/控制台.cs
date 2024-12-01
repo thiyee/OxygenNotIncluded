@@ -21,6 +21,7 @@ namespace 大一统{
         [Option("动物猎场", "自动处死进入的动物 可通过信号控制", "新的建筑")] [JsonProperty] public bool 动物猎场 { get; set; }
         [Option("中子湮灭发生器", "发射大量辐射粒子", "新的建筑")] [JsonProperty] public bool 中子湮灭发生器 { get; set; }
 
+        [Option("自动化", "所有建筑的配方任务均可自主运行", "新建筑特性")] [JsonProperty] public bool 自动化 { get; set; }
         [Option("按摩床恢复速度", "按摩床恢复速度30%/秒", "新建筑特性")] [JsonProperty] public bool 按摩床恢复速度 { get; set; }
         [Option("超视望远镜", "望远镜范围增加到15", "新建筑特性")] [JsonProperty] public bool 超视望远镜 { get; set; }
         [Option("改造储气液库", "储气库储液库能手动操作", "新建筑特性")] [JsonProperty] public bool 改造储气液库 { get; set; }
@@ -50,6 +51,12 @@ namespace 大一统{
         [Option("超时空传送", "复制人可以瞬间到达可到达的地点", "功能性修改")] [JsonProperty] public bool 超时空传送 { get; set; }
         [Option("铁砂掌", "复制人拾起的东西在放下前不会发生换热", "功能性修改")] [JsonProperty] public bool 铁砂掌 { get; set; }
         [Option("祖宗人", "复制人无视外部极端环境", "功能性修改")] [JsonProperty] public bool 祖宗人 { get; set; }
+        [Option("繁茂核心", "所有植物对温度与气压不再敏感", "功能性修改")] [JsonProperty] public bool 繁茂核心 { get; set; }
+        [Option("一键设置长周期植物", "小吃豆小麦等长周期植物 生长周期-75% 果实-50%", "功能性修改")] [JsonProperty] public bool 一键设置长周期植物 { get; set; }
+        [Option("物质大一统", "铌 导热质熔点+3000 陶瓷熔点+5000 隔热质导热率=0 熔融铀凝点物质为浓缩铀\n超级冷却剂熔点+8000℃ 比热容*30", "功能性修改")] [JsonProperty] public bool 物质大一统 { get; set; }
+        [Option("白嫖怪", "复制人可以将地上的种子就地种下", "功能性修改")] [JsonProperty] public bool 白嫖怪 { get; set; }
+
+        [Option("更大团物质", "修改物质堆叠最大质量", "功能性修改")] [Limit(25000f, 10000000f)] [JsonProperty] public float 更大团物质 { get; set; }
 
 
 
@@ -61,11 +68,8 @@ namespace 大一统{
         [Option("植物生长速度", "加速/减速任何植物的生长速度", "属性控制", Format = "F2")] [Limit(0.0, 10.0)] [JsonProperty] public float 植物生长速度 { get; set; }
         [Option("动物产蛋速度", "加速被驯化的动物的产蛋速度", "属性控制", Format = "F2")] [Limit(0.0, 1000.0)] [JsonProperty] public float 动物产蛋速度 { get; set; }
         [Option("孵化速度", "加速/减速任何蛋的孵化速度", "属性控制", Format = "F2")] [Limit(0.0, 1000.0)] [JsonProperty] public float 孵化速度 { get; set; }
-        [Option("一键设置长周期植物", "小吃豆小麦等长周期植物 生长周期-75% 果实-50%", "属性控制")] [JsonProperty] public bool 一键设置长周期植物 { get; set; }
         [Option("物质导热系数", "实际导热率=原导热率*物质导热系数", "属性控制", Format = "F2")] [Limit(1.0, 1000.0)] [JsonProperty] public float 物质导热系数 { get; set; }
         [Option("最低结块质量", "当结块质量小于最低结块质量时 实际结块质量为最低结块质量", "属性控制", Format = "F2")] [Limit(0.0, 10000.0)] [JsonProperty] public float 最低结块质量 { get; set; }
-        [Option("物质大一统", "铌 导热质熔点+3000 陶瓷熔点+5000 隔热质导热率=0 熔融铀凝点物质为浓缩铀\n超级冷却剂熔点+8000℃ 比热容*30", "属性控制")] [JsonProperty] public bool 物质大一统 { get; set; }
-        [Option("繁茂核心", "所有植物对温度与气压不再敏感", "属性控制")] [JsonProperty] public bool 繁茂核心 { get; set; }
 
         [Option("小人初始技能点", "控制小人在被打印或创建时获取的用于学习技能的技能点", "属性控制")] [Limit(0, 1000)] [JsonProperty] public int 小人初始技能点 { get; set; }
         [Option("小人初始天赋点", "允许你控制小人各项属性的初始点数", "属性控制")] [Limit(0, 100)] [JsonProperty] public int 小人初始天赋点 { get; set; }
@@ -78,6 +82,8 @@ namespace 大一统{
 
         public 大一统控制台UI()
         {
+
+            this.自动化 = false;
             this.按摩床恢复速度 = false;
             //this.捕捉飞行动物和鱼 = false;
             this.超视望远镜 = false;
@@ -132,6 +138,9 @@ namespace 大一统{
             this.小人工作速度 = 1;
             this.铁砂掌 = false;
             this.祖宗人 = false;
+            this.白嫖怪 = false;
+
+            this.更大团物质 = 25000f;
 
             //this.真荧光棒 = false;
             //this.荧光棒强度 = 1;
@@ -146,9 +155,9 @@ namespace 大一统{
             base.OnLoad(harmony);
 
             强制建造.强制建造 强制建造ins = new 强制建造.强制建造();
-            //真荧光棒.真荧光棒 荧光棒属性ins = new 真荧光棒.真荧光棒();
             动物更耐高低温.动物体质增强 动物体质增强ins = new 动物更耐高低温.动物体质增强();
             效果修改.效果修改 效果修改ins = new 效果修改.效果修改();
+            小人获得更多特质.小人获得更多特质 小人获得更多特质ins = new 小人获得更多特质.小人获得更多特质();
         }
     }
 }
