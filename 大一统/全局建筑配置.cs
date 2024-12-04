@@ -19,7 +19,6 @@ namespace 全局建筑配置
             {
                 case HighEnergyParticleRedirectorConfig.ID:
                     {
-                        Console.WriteLine(def.PrefabID + "----------");
                         def.MaterialCategory = MATERIALS.ANY_BUILDABLE;
                     }
                     break;
@@ -41,7 +40,7 @@ namespace 全局建筑配置
 
             ComplexFabricator complex = null;
             def.BuildingComplete?.TryGetComponent(out complex);
-            if (complex != null) complex.duplicantOperated = false;
+            if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.自动化&& complex != null) complex.duplicantOperated = false;
         }
 
 
