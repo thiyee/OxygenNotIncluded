@@ -103,6 +103,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnyHarmony.cs" />
     <Compile Include="FieldAccess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="中子湮灭发生器.cs" />
@@ -160,7 +161,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cmd /k copy /y $(TargetDir)$(TargetName)$(TargetExt) $(SolutionDir)Mods\$(TargetName)\$(TargetName)$(TargetExt)
-cmd /k $(SolutionDir)Mods\copy.bat
-cmd /k del $(TargetDir)$(TargetName)$(TargetExt)</PostBuildEvent>
+cmd /k $(SolutionDir)Mods\copy.bat</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -63,5 +63,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\大一统\大一统.csproj">
+      <Project>{6E047260-603D-4CCC-B06E-199727200AB7}</Project>
+      <Name>大一统</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

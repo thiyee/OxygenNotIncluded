@@ -176,7 +176,8 @@ public class Plantable : Workable
 
 
 
-[HarmonyPatch(typeof(EntityTemplates), "CreateAndRegisterSeedForPlant")] public class 白嫖怪
+[AnyHarmonyPatch(typeof(EntityTemplates), "CreateAndRegisterSeedForPlant")] 
+public class 白嫖怪
 {
     public static void Postfix(ref GameObject __result)
     {

@@ -3,6 +3,7 @@ using KMod;
 using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace 大一统{
     [JsonObject(MemberSerialization.OptIn)]
@@ -154,10 +155,8 @@ namespace 大一统{
             new POptions().RegisterOptions(this, typeof(大一统控制台UI));
             base.OnLoad(harmony);
 
-            强制建造.强制建造 强制建造ins = new 强制建造.强制建造();
-            动物更耐高低温.动物体质增强 动物体质增强ins = new 动物更耐高低温.动物体质增强();
-            效果修改.效果修改 效果修改ins = new 效果修改.效果修改();
-            小人获得更多特质.小人获得更多特质 小人获得更多特质ins = new 小人获得更多特质.小人获得更多特质();
+            new AnyHarmony(Assembly.GetExecutingAssembly());
+
         }
     }
 }
