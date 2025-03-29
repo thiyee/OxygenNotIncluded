@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 蒸汽时代
 {
-	[HarmonyPatch(typeof(SteamTurbineConfig2), "DoPostConfigureComplete")]
+	[AnyHarmonyPatch(typeof(SteamTurbineConfig2), "DoPostConfigureComplete")]
 	public class 蒸汽机吸取速度
 	{
 		private static void Postfix(ref GameObject go)
@@ -21,7 +21,7 @@ namespace 蒸汽时代
 			}
 		}
 	}
-	[HarmonyPatch(typeof(SteamTurbine), MethodType.Constructor)]
+	[AnyHarmonyPatch(typeof(SteamTurbine), ".ctor")]
 	public class 蒸汽机吸取最小温度
 	{
 		private static void Postfix(ref float ___minActiveTemperature, ref float ___idealSourceElementTemperature, ref float ___maxBuildingTemperature)

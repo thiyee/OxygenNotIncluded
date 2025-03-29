@@ -253,7 +253,7 @@ namespace 中子湮灭发生器
 		public const string ID = "UnobtaniumAnnihilationGenerator";
 	}
 
-	[HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
+	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
 	class 添加建筑
 	{
 		public static void Prefix()
@@ -267,7 +267,7 @@ namespace 中子湮灭发生器
 			}
 		}
 	}
-	[HarmonyPatch(typeof(HighEnergyParticleRedirectorConfig), "ConfigureBuildingTemplate")]
+	[AnyHarmonyPatch(typeof(HighEnergyParticleRedirectorConfig), "ConfigureBuildingTemplate")]
 	class 辐射粒子变向器容量
 	{
 		private static void Postfix(ref HighEnergyParticleRedirectorConfig __instance, ref GameObject go, Tag prefab_tag)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 铁砂掌
 {
-    [HarmonyPatch(typeof(BaseMinionConfig), "BaseMinion")]
+    [AnyHarmonyPatch(typeof(BaseMinionConfig), "BaseMinion")]
     class 铁砂掌{
         private static void Postfix(ref GameObject __result)
         {

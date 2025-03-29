@@ -15,7 +15,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>portable</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -148,6 +148,7 @@
     <Compile Include="辐射蜂巢耐热.cs" />
     <Compile Include="辐星高照.cs" />
     <Compile Include="铁砂掌.cs" />
+    <Compile Include="幽灵门.cs" />
     <Compile Include="高频电炉.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +162,7 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cmd /k copy /y $(TargetDir)$(TargetName)$(TargetExt) $(SolutionDir)Mods\$(TargetName)\$(TargetName)$(TargetExt)
+cmd /k copy /y $(TargetDir)$(TargetName).pdb $(SolutionDir)Mods\$(TargetName)\$(TargetName).pdb
 cmd /k $(SolutionDir)Mods\copy.bat</PostBuildEvent>
   </PropertyGroup>
 </Project>

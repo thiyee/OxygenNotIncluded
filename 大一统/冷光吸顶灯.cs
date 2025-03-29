@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 冷光吸顶灯
 {
-	[HarmonyPatch(typeof(CeilingLightConfig), "CreateBuildingDef")]
+	[AnyHarmonyPatch(typeof(CeilingLightConfig), "CreateBuildingDef")]
 	public class 冷光吸顶灯
 	{
 		// Token: 0x06000007 RID: 7 RVA: 0x000020B0 File Offset: 0x000002B0

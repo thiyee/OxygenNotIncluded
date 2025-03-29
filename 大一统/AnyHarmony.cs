@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using HarmonyLib;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public sealed class AnyHarmonyPatch : Attribute
+public class AnyHarmonyPatch : Attribute
 {
     public Type TargetType { get; }
     public string MethodName { get; }
@@ -26,7 +28,7 @@ public sealed class AnyHarmonyPatch : Attribute
     }
 }
 
-public sealed class AnyHarmony : IDisposable
+public class AnyHarmony : IDisposable
 {
     private readonly Harmony _harmony;
     private readonly Assembly _assembly;
@@ -84,16 +86,36 @@ public sealed class AnyHarmony : IDisposable
     {
         try
         {
-            MethodBase[] methods = targetType.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            methods= methods.Concat(targetType.GetConstructors(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
-            methods= methods.Where(m => m.Name == methodName).ToArray();
-
+            MethodBase[] methods = targetType.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)
+                .OfType<MethodBase>()
+                .Where(m => m.Name == methodName)
+                .ToArray();
             if (methods.Count() <= 0)
             {
                 throw new MissingMethodException($"Method {methodName} not found in {targetType.FullName}");
             }
             foreach (var method in methods)
             {
+                // 收集非空的补丁方法信息
+                var patchMethods = new List<string>();
+
+                if (prefix != null)
+                    patchMethods.Add($"prefix:{prefix.method.DeclaringType?.Name}.{prefix.method.Name}");
+
+                if (postfix != null)
+                    patchMethods.Add($"postfix:{postfix.method.DeclaringType?.Name}.{postfix.method.Name}");
+
+                if (transpiler != null)
+                    patchMethods.Add($"transpiler:{transpiler.method.DeclaringType?.Name}.{transpiler.method.Name}");
+
+                if (finalizer != null)
+                    patchMethods.Add($"finalizer:{finalizer.method.DeclaringType?.Name}.{finalizer.method.Name}");
+
+                // 检查是否有至少一个补丁方法
+                if (patchMethods.Count == 0)
+                    throw new InvalidOperationException($"至少需要提供一个补丁方法（prefix/postfix/transpiler/finalizer）for {method.DeclaringType?.Name}.{method.Name}");
+
+                // 应用补丁
                 _harmony.Patch(
                     original: method,
                     prefix: prefix,
@@ -101,7 +123,13 @@ public sealed class AnyHarmony : IDisposable
                     transpiler: transpiler,
                     finalizer: finalizer
                 );
-                Console.WriteLine($"Custom Patch original:{method.Name} prefix:{prefix?.method?.Name} postfix:{postfix?.method?.Name} transpiler:{transpiler?.method?.Name} finalizer:{finalizer?.method?.Name}");
+
+                // 构建输出信息
+                var output = new StringBuilder();
+                output.Append($"Patched: {method.DeclaringType?.Name}.{method.Name}");
+                output.Append($" | With: {string.Join(", ", patchMethods)}");
+
+                Console.WriteLine(output.ToString());
             }
         }
         catch (Exception ex)

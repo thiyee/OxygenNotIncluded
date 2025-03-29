@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace 无限拖把
 {
-	[HarmonyPatch(typeof(MopTool), "OnPrefabInit")]
+	[AnyHarmonyPatch(typeof(MopTool), "OnPrefabInit")]
 	public class 无限拖把
 	{
 		public static void Postfix()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 树鼠种植密度
 {
-	[HarmonyPatch(typeof(PlantableCellQuery), MethodType.Constructor)]
+	[AnyHarmonyPatch(typeof(PlantableCellQuery), ".ctor")]
 	public class 树鼠种植密度修改
 	{
 		// Token: 0x0600000F RID: 15 RVA: 0x0000218B File Offset: 0x0000038B
@@ -21,7 +21,7 @@ namespace 树鼠种植密度
 		}
 	}
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-	[HarmonyPatch(typeof(SeedPlantingMonitor.Def), MethodType.Constructor)]
+	[AnyHarmonyPatch(typeof(SeedPlantingMonitor.Def), ".ctor")]
 	public class 树鼠种植速度修改
 	{
 		// Token: 0x0600000F RID: 15 RVA: 0x0000218B File Offset: 0x0000038B

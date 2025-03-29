@@ -22,7 +22,7 @@ namespace 全局建筑配置
                         def.MaterialCategory = MATERIALS.ANY_BUILDABLE;
                     }
                     break;
-                case PressureDoorConfig.ID:
+                case GhostDoorConfig.ID:
                     {
                         def.MassForTemperatureModification *= (BUILDINGS.CONSTRUCTION_MASS_KG.TIER7[0] / def.Mass[0])*10000;
                         def.Mass = BUILDINGS.CONSTRUCTION_MASS_KG.TIER7;
@@ -44,7 +44,7 @@ namespace 全局建筑配置
         }
 
 
-        [HarmonyPatch(typeof(BuildingConfigManager), "RegisterBuilding")]
+        [AnyHarmonyPatch(typeof(BuildingConfigManager), "RegisterBuilding")]
         public class RegisterBuildingPatch
         {
             public static void Postfix(BuildingConfigManager __instance, IBuildingConfig config)
@@ -60,7 +60,7 @@ namespace 全局建筑配置
                 }
             }
         }
-        [HarmonyPatch(typeof(Assets), "AddBuildingDef")]
+        [AnyHarmonyPatch(typeof(Assets), "AddBuildingDef")]
         public class AddBuildingDefPatch
         {
             public static void Postfix(BuildingDef def)
@@ -68,7 +68,7 @@ namespace 全局建筑配置
                 BuildingComplete(def);
             }
         }
-        [HarmonyPatch(typeof(BuildingTemplates), "CreateBuildingDef")]
+        [AnyHarmonyPatch(typeof(BuildingTemplates), "CreateBuildingDef")]
         public class CreateBuildingDefPatch
         {
             public static void Postfix(BuildingDef __result)

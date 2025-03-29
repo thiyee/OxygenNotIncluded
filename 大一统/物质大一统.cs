@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 物质大一统
 {
-	[HarmonyPatch(typeof(ElementLoader), "CopyEntryToElement")]
+	[AnyHarmonyPatch(typeof(ElementLoader), "CopyEntryToElement")]
 	public class 物质大一统
 	{
 		private static void Prefix(ref ElementLoader.ElementEntry entry, ref Element elem)

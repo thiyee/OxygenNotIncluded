@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace 种子掉落概率
 {
-    [HarmonyPatch(typeof(SeedProducer), "CropPicked")]
+    [AnyHarmonyPatch(typeof(SeedProducer), "CropPicked")]
     public class 种子掉落概率{
 		public static bool Prefix(SeedProducer __instance,object data){
 			if (__instance.seedInfo.productionType == SeedProducer.ProductionType.Harvest)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 最后的基地
 {
-	[HarmonyPatch(typeof(CarePackageInfo), MethodType.Constructor, new Type[] { typeof(string), typeof(float), typeof(Func<bool>) })]
+	[AnyHarmonyPatch(typeof(CarePackageInfo), ".ctor")]
 	public class 打印舱无需发现物品
 	{
 		private static void Prefix(ref string ID, ref float amount, ref Func<bool> requirement)
@@ -18,7 +18,7 @@ namespace 最后的基地
 		}
 	}
 	//|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-	[HarmonyPatch(typeof(HeadquartersConfig), "DoPostConfigureComplete")]
+	[AnyHarmonyPatch(typeof(HeadquartersConfig), "DoPostConfigureComplete")]
 	public class 打印舱添加新的物品{
 		private static void Postfix(ref GameObject go){
 			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.最后的基地){
@@ -165,7 +165,7 @@ namespace 最后的基地
 		}
 	}
 
-	[HarmonyPatch(typeof(HeadquartersConfig), "CreateBuildingDef")]
+	[AnyHarmonyPatch(typeof(HeadquartersConfig), "CreateBuildingDef")]
 	public class 最后的基地1{
 		private static void Postfix(ref BuildingDef __result){
 			if (PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.最后的基地) { 

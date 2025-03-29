@@ -7,7 +7,7 @@ using Klei.AI;
 using TUNING;
 namespace 小人获得更多特质
 {
-	[HarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
+	[AnyHarmonyPatch(typeof(MinionStartingStats), "GenerateTraits")]
 	public class 小人获得更多特质{
 		public static void Postfix(MinionStartingStats __instance)
 		{

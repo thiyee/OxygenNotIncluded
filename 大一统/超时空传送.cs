@@ -63,7 +63,7 @@ namespace 超时空传送
 
 	}
 	public class 超时空传送{
-		[HarmonyPatch(typeof(Navigator), "AdvancePath")]
+		[AnyHarmonyPatch(typeof(Navigator), "AdvancePath")]
 		public class Navigator_AdvancePath
 		{
 			public static bool Prefix(ref Navigator __instance, bool trigger_advance = true)
@@ -111,13 +111,6 @@ namespace 超时空传送
 					}
 					if (__instance.path.IsValid())
 					{
-
-						//StackTrace stack = new StackTrace();
-						//StackFrame[] frames = stack.GetFrames();
-						//foreach (var frame in frames)
-						//{
-						//	Console.WriteLine($"{frame.GetMethod().DeclaringType.Name}.{frame.GetMethod().Name}");
-						//}
 						Navigator navigator = __instance;
 						int end = __instance.path.nodes.Count - 1;
 						navigator.SetCurrentNavType(__instance.path.nodes[end].navType);

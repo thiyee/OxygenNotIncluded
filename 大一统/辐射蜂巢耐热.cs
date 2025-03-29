@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 辐射蜂巢耐热
 {
-	[HarmonyPatch(typeof(BaseBeeHiveConfig), "CreatePrefab")]
+	[AnyHarmonyPatch(typeof(BaseBeeHiveConfig), "CreatePrefab")]
 	public class 辐射蜂巢耐热
 	{
 		// Token: 0x06000007 RID: 7 RVA: 0x000020B0 File Offset: 0x000002B0

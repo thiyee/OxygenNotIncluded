@@ -8,7 +8,7 @@ using TUNING;
 
 namespace 大一统
 {
-	[HarmonyPatch(typeof(MinionStartingStats), "GenerateAttributes")]
+	[AnyHarmonyPatch(typeof(MinionStartingStats), "GenerateAttributes")]
 	class 小人初始天赋点
 	{
 		public static void Postfix(ref MinionStartingStats __instance)

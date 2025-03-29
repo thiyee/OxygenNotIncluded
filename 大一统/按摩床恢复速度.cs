@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 按摩床恢复速度
 {
-	[HarmonyPatch(typeof(MassageTableConfig), "DoPostConfigureComplete")]
+	[AnyHarmonyPatch(typeof(MassageTableConfig), "DoPostConfigureComplete")]
 	public class 按摩床恢复速度{
 		public static void Postfix(GameObject go)
 		{

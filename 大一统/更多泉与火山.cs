@@ -17,10 +17,10 @@ namespace 更多泉与火山
 	public class 更多泉与火山
 	{
 		static List<Cell> 火山填充物 = new List<Cell> {
-			new Cell(-1,-2,SimHashes.Unobtanium,1,20000,null,0,false),
-			new Cell(0 ,-2,SimHashes.Unobtanium,1,20000,null,0,false),
-			new Cell(1 ,-2,SimHashes.Unobtanium,1,20000,null,0,false),
-			new Cell(2 ,-2,SimHashes.Unobtanium,1,20000,null,0,false),
+			new Cell(-1,-2,SimHashes.Unobtanium,9000f,20000,null,0,false),
+			new Cell(0 ,-2,SimHashes.Unobtanium,9000f,20000,null,0,false),
+			new Cell(1 ,-2,SimHashes.Unobtanium,9000f,20000,null,0,false),
+			new Cell(2 ,-2,SimHashes.Unobtanium,9000f,20000,null,0,false),
 			new Cell(-1,-1,SimHashes.Katairite,273.15f,500,null,0,false),
 			new Cell(0 ,-1,SimHashes.Katairite,273.15f,500,null,0,false),
 			new Cell(1 ,-1,SimHashes.Katairite,273.15f,500,null,0,false),
@@ -39,10 +39,10 @@ namespace 更多泉与火山
 			new Cell(2 ,2,SimHashes.Katairite,273.15f,500,null,0,false)
 		};
 		static List<Cell> 泉填充物 = new List<Cell> {
-					new Cell(-1,-1,SimHashes.Unobtanium,1,20000,null,0,false),
-					new Cell(0 ,-1,SimHashes.Unobtanium,1,20000,null,0,false),
-					new Cell(1 ,-1,SimHashes.Unobtanium,1,20000,null,0,false),
-					new Cell(2 ,-1,SimHashes.Unobtanium,1,20000,null,0,false),
+					new Cell(-1,-1,SimHashes.Unobtanium,9000f,20000,null,0,false),
+					new Cell(0 ,-1,SimHashes.Unobtanium,9000f,20000,null,0,false),
+					new Cell(1 ,-1,SimHashes.Unobtanium,9000f,20000,null,0,false),
+					new Cell(2 ,-1,SimHashes.Unobtanium,9000f,20000,null,0,false),
 					new Cell(-1,0,SimHashes.Katairite,273.15f,500,null,0,false),
 					new Cell(0 ,0,SimHashes.Katairite,273.15f,500,null,0,false),
 					new Cell(1 ,0,SimHashes.Katairite,273.15f,500,null,0,false),
@@ -101,7 +101,7 @@ namespace 更多泉与火山
 			return template;
 		}
 
-		[HarmonyPatch(typeof(GeyserGenericConfig), "GenerateConfigs")]
+		[AnyHarmonyPatch(typeof(GeyserGenericConfig), "GenerateConfigs")]
 		public class 增加新的泉1
 		{
 			private static void Postfix(ref List<GeyserGenericConfig.GeyserPrefabParams> __result)
@@ -219,7 +219,7 @@ namespace 更多泉与火山
 			}
 		}
 
-		[HarmonyPatch(typeof(WorldGen), "RenderOffline")]
+		[AnyHarmonyPatch(typeof(WorldGen), "RenderOffline")]
 		public class 增加新的泉2
 		{
 			static bool isinit = false;
@@ -303,7 +303,7 @@ namespace 更多泉与火山
 
 		}
 
-		[HarmonyPatch(typeof(TemplateCache), "GetTemplate")]
+		[AnyHarmonyPatch(typeof(TemplateCache), "GetTemplate")]
 		public class 增加新的泉3
 		{
 

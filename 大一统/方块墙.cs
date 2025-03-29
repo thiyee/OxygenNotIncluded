@@ -81,7 +81,7 @@ namespace 方块墙
 			GeneratedBuildings.RemoveLoopingSounds(go);
 		}
 
-		[HarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
+		[AnyHarmonyPatch(typeof(BuildingComplete), "OnSpawn")]
 		public static class 方块墙建造Patch
 		{
 			public static void Postfix(BuildingComplete __instance)
@@ -99,7 +99,7 @@ namespace 方块墙
 			}
 
 		}
-		[HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
+		[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
 		class 添加建筑
 		{
 			public static void Prefix()

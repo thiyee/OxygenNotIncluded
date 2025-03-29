@@ -4,8 +4,7 @@ using System.Reflection;
 
 namespace 辐星高照
 {
-    [HarmonyPatch(typeof(WorldContainer))]
-    [HarmonyPatch("GetCosmicRadiationValueFromFixedTrait")]
+    [AnyHarmonyPatch(typeof(WorldContainer), "GetCosmicRadiationValueFromFixedTrait")]
     public class WorldContainer_Patch
     {
         private static bool isInit = false;

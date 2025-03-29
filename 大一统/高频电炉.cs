@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 高频电炉
 {
-	[HarmonyPatch(typeof(GlassForgeConfig), "ConfigureBuildingTemplate")]
+	[AnyHarmonyPatch(typeof(GlassForgeConfig), "ConfigureBuildingTemplate")]
 	public class 高频电炉
 	{
 		private static void Postfix(ref GameObject go)

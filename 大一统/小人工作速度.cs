@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 小人工作速度
 {
-	[HarmonyPatch(typeof(Database.AttributeConverters), "Create")]
+	[AnyHarmonyPatch(typeof(Database.AttributeConverters), "Create")]
 	public class 小人工作速度
 	{
 		private static void Prefix(ref float multiplier, ref float base_value)

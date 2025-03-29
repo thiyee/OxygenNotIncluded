@@ -4,6 +4,7 @@ using PeterHan.PLib.Core;
 using PeterHan.PLib.Options;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace 大一统{
     [JsonObject(MemberSerialization.OptIn)]
@@ -20,6 +21,7 @@ namespace 大一统{
         [Option("方块墙", "建造一个自然土块", "新的建筑")] [JsonProperty] public bool 方块墙 { get; set; }
         [Option("自动挖掘墙", "挖掘在其上的固体", "新的建筑")] [JsonProperty] public bool 自动挖掘墙 { get; set; }
         [Option("动物猎场", "自动处死进入的动物 可通过信号控制", "新的建筑")] [JsonProperty] public bool 动物猎场 { get; set; }
+        [Option("幽灵门", "复制人可通过 但气体与液体不可通过的门", "新的建筑")] [JsonProperty] public bool 幽灵门 { get; set; }
         [Option("中子湮灭发生器", "发射大量辐射粒子", "新的建筑")] [JsonProperty] public bool 中子湮灭发生器 { get; set; }
 
         [Option("自动化", "所有建筑的配方任务均可自主运行", "新建筑特性")] [JsonProperty] public bool 自动化 { get; set; }
@@ -151,6 +153,7 @@ namespace 大一统{
         class 控制台 : UserMod2{
         public override void OnLoad(Harmony harmony)
         {
+            Debugger.Break();
             PUtil.InitLibrary(true);
             new POptions().RegisterOptions(this, typeof(大一统控制台UI));
             base.OnLoad(harmony);

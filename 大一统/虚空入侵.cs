@@ -10,7 +10,7 @@ using static ProcGen.SubWorld;
 
 namespace 虚空入侵
 {
-	[HarmonyPatch(typeof(WorldGen), "RenderOffline")]
+	[AnyHarmonyPatch(typeof(WorldGen), "RenderOffline")]
 	public class 虚空入侵
     {
 		static bool isinit = false;

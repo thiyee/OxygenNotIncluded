@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace 储物箱容量
 {
-	[HarmonyPatch(typeof(Storage), MethodType.Constructor)]
+	[AnyHarmonyPatch(typeof(Storage), ".ctor")]
 	public class 储物箱容量
 	{
 		private static void Postfix(ref float ___capacityKg)

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace 改造储气液库
 {
-	[HarmonyPatch(typeof(LiquidReservoirConfig), "ConfigureBuildingTemplate")]
+	[AnyHarmonyPatch(typeof(LiquidReservoirConfig), "ConfigureBuildingTemplate")]
 	public class 储液库修改
 	{
 		private static void Postfix(ref GameObject go, ref Tag prefab_tag)
@@ -32,7 +32,7 @@ namespace 改造储气液库
 		}
 	}
 
-	[HarmonyPatch(typeof(GasReservoirConfig), "ConfigureBuildingTemplate")]
+	[AnyHarmonyPatch(typeof(GasReservoirConfig), "ConfigureBuildingTemplate")]
 	public class 储气库修改
 	{
 		private static void Postfix(ref GameObject go, ref Tag prefab_tag)

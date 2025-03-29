@@ -213,7 +213,7 @@ namespace 动物猎场
 
 
 	}
-	[HarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
+	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings")]
 	class 添加建筑
 	{
 		public static void Prefix()

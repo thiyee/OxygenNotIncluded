@@ -9,7 +9,7 @@ namespace 强制隔热
 {
     class 强制隔热
     {
-		[HarmonyPatch(typeof(InsulatedLiquidConduitConfig), "CreateBuildingDef")]
+		[AnyHarmonyPatch(typeof(InsulatedLiquidConduitConfig), "CreateBuildingDef")]
 		public class 绝热液体管道
 		{
 			private static void Postfix(ref BuildingDef __result)
@@ -18,7 +18,7 @@ namespace 强制隔热
 			}
 		}
 
-		[HarmonyPatch(typeof(InsulatedGasConduitConfig), "CreateBuildingDef")]
+		[AnyHarmonyPatch(typeof(InsulatedGasConduitConfig), "CreateBuildingDef")]
 		public class 绝热气体管道
 		{
 			private static void Postfix(ref BuildingDef __result)
@@ -27,7 +27,7 @@ namespace 强制隔热
 			}
 		}
 
-		[HarmonyPatch(typeof(InsulationTileConfig), "CreateBuildingDef")]
+		[AnyHarmonyPatch(typeof(InsulationTileConfig), "CreateBuildingDef")]
 		public class 绝热砖
 		{
 			private static void Postfix(ref BuildingDef __result)

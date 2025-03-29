@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace 光电效应
 {
-    [HarmonyPatch(typeof(SolarPanel), "EnergySim200ms")]
+    [AnyHarmonyPatch(typeof(SolarPanel), "EnergySim200ms")]
     public static class 光电效应
     {
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)

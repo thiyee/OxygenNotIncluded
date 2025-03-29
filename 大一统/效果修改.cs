@@ -37,7 +37,6 @@ namespace 效果修改
 
 			if (attribute_id == Db.Get().Amounts.Maturity.deltaAttribute.Id)
 			{
-				Debug.Log($"植物生长更快:{value * PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.植物生长速度}");
 				if (value > 0) value *= PeterHan.PLib.Options.SingletonOptions<大一统.大一统控制台UI>.Instance.植物生长速度;//植物生长更快
 			}
 			if (attribute_id == Db.Get().Amounts.Incubation.deltaAttribute.Id)

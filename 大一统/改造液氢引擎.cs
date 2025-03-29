@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 改造液氢引擎
 {
-	[HarmonyPatch(typeof(HydrogenEngineClusterConfig), "CreateBuildingDef")]
+	[AnyHarmonyPatch(typeof(HydrogenEngineClusterConfig), "CreateBuildingDef")]
 	public class 液氢引擎改造1
 	{
 		private static void Postfix(ref BuildingDef __result)
@@ -20,7 +20,7 @@ namespace 改造液氢引擎
 			}
 		}
 	}
-	[HarmonyPatch(typeof(HydrogenEngineClusterConfig), "DoPostConfigureComplete")]
+	[AnyHarmonyPatch(typeof(HydrogenEngineClusterConfig), "DoPostConfigureComplete")]
 	public class 液氢引擎改造2
 	{
 		private static void Postfix(ref GameObject go)

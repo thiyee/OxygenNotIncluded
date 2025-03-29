@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace 自动收获
 {
-	[HarmonyPatch(typeof(EntityTemplates), "ExtendEntityToBasicPlant")]
+	[AnyHarmonyPatch(typeof(EntityTemplates), "ExtendEntityToBasicPlant")]
 	public class 自动收获
 	{
 		static bool init=false;

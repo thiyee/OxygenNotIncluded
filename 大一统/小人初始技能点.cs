@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 小人初始技能点
 {
-    [HarmonyPatch(typeof(MinionStartingStats), "ApplyAptitudes")]
+    [AnyHarmonyPatch(typeof(MinionStartingStats), "ApplyAptitudes")]
     class 小人初始技能点
     {
 		public static void Postfix(ref MinionStartingStats __instance,ref GameObject go){

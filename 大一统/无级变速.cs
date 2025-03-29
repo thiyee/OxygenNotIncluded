@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace 无极变速
 {
-	[HarmonyPatch(typeof(SpeedControlScreen), "OnChanged")]
+	[AnyHarmonyPatch(typeof(SpeedControlScreen), "OnChanged")]
 	public class 无极变速
 	{
 		private static void Postfix(ref SpeedControlScreen __instance)
