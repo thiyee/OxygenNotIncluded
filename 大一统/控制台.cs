@@ -27,15 +27,15 @@ namespace 大一统{
         [Option("中子湮灭发生器", "发射大量辐射粒子", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 中子湮灭发生器 { get; set; }
 
         [Option("自动化", "所有建筑的配方任务均可自主运行", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 自动化 { get; set; }
-        [Option("按摩床恢复速度", "按摩床恢复速度30%/秒", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 按摩床恢复速度 { get; set; }
+        [Option("按摩床恢复速度", "按摩床恢复速度加成", "新建筑特性") ][JsonProperty] [DefaultValue(1f)] [Limit(1.0f, 1000.0f)] public  float 按摩床恢复速度 { get; set; }
         [Option("千里眼", "望远镜范围增加到15", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 千里眼 { get; set; }
         [Option("管道电解器", "允许电解器安装气体管道", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 管道电解器 { get; set; }
         [Option("改造储气液库", "储气库储液库能手动操作", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 改造储气液库 { get; set; }
         [Option("改造液氢引擎", "液氢引擎能灌入燃料", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 改造液氢引擎 { get; set; }
         [Option("高频电炉", "玻璃熔炉能融化任何固体物质", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 高频电炉 { get; set; }
         [Option("冷光吸顶灯", "吸顶灯不再发热", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 冷光吸顶灯 { get; set; }
-        [Option("智能冰箱", "储存温度为-20℃ 更大容量", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 强化冰箱 { get; set; }
-        [Option("最后的基地", "打印舱提供基础维生设备和电力设施 对新手友好", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 最后的基地 { get; set; }
+        [Option("强化冰箱", "储存温度为-20℃ 更大容量", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 强化冰箱 { get; set; }
+        [Option("最后的基地", "打印舱提供基础维生设备和电力设施,且可使用金属铌兑换种子和小动物蛋", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 最后的基地 { get; set; }
         [Option("电线穿墙", "粗电线/导线穿墙", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 电线穿墙 { get; set; }
         [Option("光电效应", "太阳能板发电量增强 没有上限 告别CPU发电", "新建筑特性", Format = "F0") ][Limit(1, 10) ][JsonProperty] [DefaultValue(1)] public  float 光电效应 { get; set; }
         [Option("储物箱容量", "储物箱容量(吨)", "新建筑特性", Format = "F0") ][Limit(20, float.MaxValue) ][JsonProperty] [DefaultValue(20.0f)] public  float 储物箱容量 { get; set; }
@@ -46,7 +46,7 @@ namespace 大一统{
         [Option("动物更耐高低温", "扩展动物的温度范围 单位[倍]", "功能性修改") ][JsonProperty] [Limit(0, 10)] [DefaultValue(0.0f)] public  float 动物更耐高低温 { get; set; }
         [Option("辐射蜂巢耐热", "辐射蜂巢能在常温下生存", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 辐射蜂巢耐热 { get; set; }
         [Option("动物无限繁殖", "动物不会拥挤和封闭", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 动物无限繁殖 { get; set; }
-        [Option("无限繁殖上限", "单个房间内 动物加蛋的最大数量,避免驯化的动物指数爆炸", "功能性修改") ][JsonProperty] [Limit(1, 10000)] public  int 无限繁殖上限 { get; set; }
+        [Option("无限繁殖上限", "单个房间内 动物加蛋的最大数量,避免驯化的动物指数爆炸", "功能性修改") ][JsonProperty] [DefaultValue(64)] [Limit(1, 10000)] public  int 无限繁殖上限 { get; set; }
 
         [Option("获得所有好特质", "小人获得所有好特质", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 获得所有好特质 { get; set; }
         [Option("精准采集", "挖掘矿物掉落全部质量", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 精准采集 { get; set; }

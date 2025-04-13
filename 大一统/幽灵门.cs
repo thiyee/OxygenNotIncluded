@@ -68,37 +68,29 @@ public class GhostDoorConfig : IBuildingConfig
 }
 
 
-
-
-[HarmonyPatch(typeof(HighEnergyParticle),nameof(HighEnergyParticle.CheckCollision))]
-class 辐射粒子碰撞Patch
+[AnyHarmonyPatch(typeof(HighEnergyParticle), nameof(HighEnergyParticle.CheckCollision), Prefix: nameof(CheckCollision), ControlName: new string[] { nameof(大一统.大一统控制台UI.幽灵门) })]
+[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", Prefix:nameof(LoadGeneratedBuildings) ,ControlName: new string[] { nameof(大一统.大一统控制台UI.幽灵门) })]
+class 幽灵门
 {
-    public static bool Prefix(HighEnergyParticle __instance)
-    {
-        int cell = Grid.PosToCell(__instance.smi.master.transform.GetPosition());
-        if (Grid.IsSolidCell(cell))
-        {
-            GameObject gameObject5 = Grid.Objects[cell, 9];
-            if (gameObject5!=null&&gameObject5.name.Contains(GhostDoorConfig.ID))
-            {
-                return false;
-            }
-        }
-        return true;
-    }
-}
-
-
-[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", ControlName: new string[] { nameof(大一统.大一统控制台UI.幽灵门) })]
-class 添加建筑
-{
-    public static void Prefix()
+    public static void LoadGeneratedBuildings()
     {
             Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.GHOSTDOOR.NAME", "幽灵门" });
             Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.GHOSTDOOR.EFFECT", "幽灵门" });
             Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.GHOSTDOOR.DESC", "复制人可通过 但气体与液体不可通过的门" });
             ModUtil.AddBuildingToPlanScreen("Base", GhostDoorConfig.ID);
             
-        
+    }
+    public static bool CheckCollision(HighEnergyParticle __instance)
+    {
+        int cell = Grid.PosToCell(__instance.smi.master.transform.GetPosition());
+        if (Grid.IsSolidCell(cell))
+        {
+            GameObject gameObject5 = Grid.Objects[cell, 9];
+            if (gameObject5 != null && gameObject5.name.Contains(GhostDoorConfig.ID))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -57,17 +57,23 @@ namespace 大一统{
 
 						if (id.EndsWith("Egg"))
 						{
-							name = Strings.Get($"STRINGS.CREATURES.SPECIES.{id.Substring(0, id.Length - 3).ToUpper()}.NAME");
+							name ="动物蛋";
 						}
 						else if (id.EndsWith("Seed"))
 						{
-							name = Strings.Get($"STRINGS.CREATURES.SPECIES.SEEDS.{id.Substring(0, id.Length - 4).ToUpper()}.NAME");
+							string baseId = id.Substring(0, id.Length - 4);
+							name = Strings.Get($"STRINGS.CREATURES.SPECIES.SEEDS.{baseId.ToUpper()}.NAME");
+							if (name.StartsWith("STRINGS.")) // 如果获取失败
+							{
+								name = Strings.Get($"STRINGS.CREATURES.SPECIES.SEEDS.{string.Concat(baseId.Select((c, i) => i > 0 && char.IsUpper(c) ? "_" + c : c.ToString())).ToUpper()}.NAME");
+							}
 						}
 
 						return (Tag: new Tag(id), Name: name, IngredientAmount: 1000f, ResultAmount: 1f);
 					}).ToList();
 
 				items.Add((Tag: new Tag("OrbitalResearchDataBank"), Name: "数据磁盘", IngredientAmount: 100f, ResultAmount: 100f));
+				items.Add((Tag: new Tag("CritterTrapPlantSeed"), Name: "土星动物捕草种子", IngredientAmount: 1000f, ResultAmount: 1f));
 
 				Tag headquarters = TagManager.Create("Headquarters");
 				Element niobium = ElementLoader.FindElementByHash(SimHashes.Niobium);
@@ -80,7 +86,7 @@ namespace 大一统{
 					var recipe = new ComplexRecipe(recipeId, input, output)
 					{
 						time = 1f,
-						description = string.Format("兑换 {0}", string.IsNullOrEmpty(item.Name) ? item.Tag.Name : item.Name),
+						description = string.IsNullOrEmpty(item.Name) ?"": $"兑换 {item.Name}",
 						nameDisplay = ComplexRecipe.RecipeNameDisplay.IngredientToResult,
 						fabricators = new List<Tag> { headquarters }
 					};

@@ -15,8 +15,8 @@ namespace 大一统{
 			GlobalBuildingConfig.DoPostConfigureComplete<MassageTableConfig>(null, (config, go) =>
 			{
 					MassageTable massageTable = go.GetComponent<MassageTable>();
-					massageTable.stressModificationValue *= 10f;                //按摩床效率*10
-					massageTable.roomStressModificationValue *= 10f;                //按摩床效率*10
+					massageTable.stressModificationValue *= 大一统.大一统控制台UI.Instance.按摩床恢复速度;   
+					massageTable.roomStressModificationValue *= 大一统.大一统控制台UI.Instance.按摩床恢复速度;  
 			});
 		}		
 	}
