@@ -37,7 +37,7 @@ public class Plantable : Workable
         base.OnSpawn();
         if (this.isMarkedForPlanting)
         {
-            this.CreateChore();
+            this.StartChore();
         }
         this.overrideAnims = new KAnimFile[]
         {
@@ -50,44 +50,82 @@ public class Plantable : Workable
         this.synchronizeAnims = false;
         base.SetWorkTime(0.1f);
     }
-
+    [System.Runtime.InteropServices.DllImport("user32.dll")]
+    public static extern short GetAsyncKeyState(int vKey);
+    const int VK_SHIFT = 0x10;
+    const int KEY_PRESSED = 0x8000;
+    bool IsShiftPressed => ((int)GetAsyncKeyState(VK_SHIFT) & KEY_PRESSED) != 0;
+    int PlantCount = 0;
+    int MaxCount => Mathf.CeilToInt(this.GetComponent<Pickupable>().TotalAmount);
+    bool IsStarted = false;
     public void TogglePlanting()
     {
+
         if (DebugHandler.InstantBuildMode)
         {
             this.OnCompleteWork(null);
             return;
         }
-        if (this.isMarkedForPlanting)
+
+
+        if (IsShiftPressed)
+        {
+            if (PlantCount < MaxCount)
+            {
+                PlantCount++;
+                this.isMarkedForPlanting = true;
+
+            }
+            else
+            {
+                PlantCount = 0;
+                this.isMarkedForPlanting = false;
+            }
+        }
+        else
+        {
+            if (this.isMarkedForPlanting) this.isMarkedForPlanting = false;
+            else
+            {
+                PlantCount = 1;
+                this.isMarkedForPlanting = true;
+            }
+        }
+        if (this.isMarkedForPlanting) StartChore();
+        else StopChore();
+    }
+    private void StopChore()
+    {
+        if (IsStarted)
         {
             this.isMarkedForPlanting = false;
+            PlantCount = 0;
             this.chore.Cancel("Cancel Planting!");
             Prioritizable.RemoveRef(base.gameObject);
             this.chore = null;
             base.ShowProgressBar(false);
-            return;
+            IsStarted = false;
         }
-        this.isMarkedForPlanting = true;
-        this.CreateChore();
-    }
 
-    private void CreateChore()
+    }
+    private void StartChore()
     {
-        if (this.chore == null)
+
+        if (!IsStarted)
         {
             Prioritizable.AddRef(base.gameObject);
             this.chore = new WorkChore<Plantable>(Db.Get().ChoreTypes.EmptyStorage, this, null, true, null, null, null, true, null, false, true, null, false, true, true, PriorityScreen.PriorityClass.basic, 5, false, true);
         }
+        IsStarted = true;
     }
 
     protected override void OnCompleteWork(WorkerBase worker)
     {
-        this.isMarkedForPlanting = false;
-        this.chore = null;
         this.Plant();
-        Prioritizable.RemoveRef(base.gameObject);
+        StopChore();
     }
-    public bool SuitableAt(PlantableSeed plantableSeed,int cell){
+    public bool SuitableAt(PlantableSeed plantableSeed, int cell)
+    {
         if (!Grid.IsValidCell(cell))
         {
             return false;
@@ -127,12 +165,49 @@ public class Plantable : Workable
     }
     public void Plant()
     {
+        PlantableSeed seed = GetComponent<PlantableSeed>();
+        if (seed != null)
+        {
+            seed.timeUntilSelfPlant = Util.RandomVariance(2400f, 600f);
+            int cell = Grid.PosToCell(base.gameObject);
+            Pickupable PlantSeeds = this.GetComponent<Pickupable>().Take(PlantCount);
+
+            for (int c = 0; c < PlantCount; c++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    if (SuitableAt(seed, cell))
+                    {
+                        Vector3 position = Grid.CellToPosCBC(cell, Grid.SceneLayer.BuildingFront);
+                        GameObject gameObject = GameUtil.KInstantiate(Assets.GetPrefab(seed.PlantID), position, Grid.SceneLayer.BuildingFront, null, 0);
+                        MutantPlant component = gameObject.GetComponent<MutantPlant>();
+                        if (component != null)
+                        {
+                            base.GetComponent<MutantPlant>().CopyMutationsTo(component);
+                        }
+                        gameObject.SetActive(true);
+                        break;
+                    }
+                    cell = Grid.CellAbove(cell);
+                }
+            }
+            if (PlantSeeds != null)
+            {
+                gameObject.GetComponent<Crop>();
+                Util.KDestroyGameObject(PlantSeeds.gameObject);
+                return;
+            }
+        }
+
+
+
         PlantableSeed plantableSeed = base.GetComponent<PlantableSeed>();
-        if (plantableSeed != null )
+        if (plantableSeed != null)
         {
             plantableSeed.timeUntilSelfPlant = Util.RandomVariance(2400f, 600f);
             int cell = Grid.PosToCell(base.gameObject);
-            for (int i = 0; i < 3; i++){
+            for (int i = 0; i < 3; i++)
+            {
                 if (SuitableAt(plantableSeed, cell))
                 {
                     Vector3 position = Grid.CellToPosCBC(cell, Grid.SceneLayer.BuildingFront);
@@ -146,8 +221,8 @@ public class Plantable : Workable
 
 
 
-                    Pickupable pickupable = plantableSeed.GetComponent<Pickupable>().Take(1f);
-
+                    Pickupable pickupable = plantableSeed.GetComponent<Pickupable>().Take(PlantCount);
+                    PlantCount = 0;
                     if (pickupable != null)
                     {
                         gameObject.GetComponent<Crop>();
@@ -168,10 +243,23 @@ public class Plantable : Workable
         {
             return;
         }
-        KIconButtonMenu.ButtonInfo button = this.isMarkedForPlanting
-            ? new KIconButtonMenu.ButtonInfo("action_empty_contents", "取消种植", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "取消这条种植指令", true)
-            : new KIconButtonMenu.ButtonInfo("action_empty_contents", "种植", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "将种子种在地上", true);
-        Game.Instance.userMenu.AddButton(base.gameObject, button, 1f);
+        if (IsShiftPressed)
+        {
+            KIconButtonMenu.ButtonInfo button = (PlantCount >= MaxCount)
+? new KIconButtonMenu.ButtonInfo("action_empty_contents", "取消种植", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "取消这条种植指令", true)
+: new KIconButtonMenu.ButtonInfo("action_empty_contents", $"种植[{PlantCount}/{MaxCount}]", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "将种子种在地上", true);
+            Game.Instance.userMenu.AddButton(base.gameObject, button, 1f);
+        }
+        else
+        {
+            KIconButtonMenu.ButtonInfo button = this.isMarkedForPlanting
+? new KIconButtonMenu.ButtonInfo("action_empty_contents", "取消种植", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "取消这条种植指令", true)
+: new KIconButtonMenu.ButtonInfo("action_empty_contents", $"种植", new System.Action(this.TogglePlanting), global::Action.NumActions, null, null, null, "将种子种在地上", true);
+            Game.Instance.userMenu.AddButton(base.gameObject, button, 1f);
+        }
+
+
+
     }
 
 }
@@ -179,13 +267,13 @@ public class Plantable : Workable
 
 
 
-[AnyHarmonyPatch(typeof(EntityTemplates), "CreateAndRegisterSeedForPlant", ControlName: new string[] { nameof(大一统.大一统控制台UI.白嫖怪) })] 
-[AnyHarmonyPatch(null,null,ExecuteOnInit:nameof(ExecuteOnInit), ControlName: new string[] { nameof(大一统.大一统控制台UI.白嫖怪) })] 
+[AnyHarmonyPatch(typeof(EntityTemplates), "CreateAndRegisterSeedForPlant", ControlName: new string[] { nameof(大一统.大一统控制台UI.白嫖怪) })]
+[AnyHarmonyPatch(null, null, ExecuteOnInit: nameof(ExecuteOnInit), ControlName: new string[] { nameof(大一统.大一统控制台UI.白嫖怪) })]
 public class 白嫖怪
 {
     public static void Postfix(ref GameObject __result)
     {
-            __result.AddComponent<Plantable>();
+        __result.AddComponent<Plantable>();
     }
     public static void ExecuteOnInit()
     {

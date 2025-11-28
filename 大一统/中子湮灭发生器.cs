@@ -170,14 +170,13 @@ namespace 大一统{
 	public class 中子湮灭发生器Config : IBuildingConfig
 	{
         // Token: 0x0600090A RID: 2314 RVA: 0x000351F4 File Offset: 0x000333F4
-        [Obsolete]
-        public override string[] GetDlcIds()
-		{
-			return DlcManager.AVAILABLE_EXPANSION1_ONLY;
-		}
+        public override string[] GetRequiredDlcIds()
+        {
+			return DlcManager.EXPANSION1;
 
-		// Token: 0x0600090B RID: 2315 RVA: 0x000351FC File Offset: 0x000333FC
-		public override BuildingDef CreateBuildingDef()
+		}
+        // Token: 0x0600090B RID: 2315 RVA: 0x000351FC File Offset: 0x000333FC
+        public override BuildingDef CreateBuildingDef()
 		{
 			string id = "UnobtaniumAnnihilationGenerator";
 			int width = 1;
@@ -253,10 +252,12 @@ namespace 大一统{
 		public const string ID = "UnobtaniumAnnihilationGenerator";
 	}
 
-	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", ControlName: new string[] { nameof(大一统.大一统控制台UI.中子湮灭发生器) })]
-	class 添加建筑
+	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings",Prefix:nameof(LoadGeneratedBuildings) ,ControlName: new string[] { nameof(大一统.大一统控制台UI.中子湮灭发生器) })]
+	[AnyHarmonyPatch(null, null, ExecuteOnInit: nameof(ExecuteOnInit), ControlName: new string[] { nameof(大一统.大一统控制台UI.中子湮灭发生器) })]
+
+	class 中子湮灭发生器
 	{
-		public static void Prefix()
+		public static void LoadGeneratedBuildings()
 		{
 				Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.UNOBTANIUMANNIHILATIONGENERATOR.NAME", "中子湮灭发生器" });
 				Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.UNOBTANIUMANNIHILATIONGENERATOR.EFFECT", "中子湮灭发生器" });
@@ -264,17 +265,13 @@ namespace 大一统{
 				ModUtil.AddBuildingToPlanScreen("Base", "UnobtaniumAnnihilationGenerator");
 			
 		}
-	}
-	[AnyHarmonyPatch(null,null,ExecuteOnInit:nameof(ExecuteOnInit), ControlName: new string[] { nameof(大一统.大一统控制台UI.中子湮灭发生器) })]
-	class 辐射粒子变向器容量
-	{
 		private static void ExecuteOnInit()
-        {
-			GlobalBuildingConfig.ConfigureBuildingTemplate<HighEnergyParticleRedirectorConfig>(null, (condig,go,tag) => {
+		{
+			GlobalBuildingConfig.ConfigureBuildingTemplate<HighEnergyParticleRedirectorConfig>(null, (condig, go, tag) => {
 				HighEnergyParticleStorage highEnergyParticleStorage = go.AddOrGet<HighEnergyParticleStorage>();
 				highEnergyParticleStorage.capacity = 50000000f;
 				go.AddOrGet<HighEnergyParticleRedirector>().directorDelay = 0f;
 			});
-        }
+		}
 	}
 }

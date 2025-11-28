@@ -38,6 +38,7 @@
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -117,12 +118,14 @@
     <Compile Include="动物更耐高低温.cs" />
     <Compile Include="动物猎场.cs" />
     <Compile Include="千里眼.cs" />
+    <Compile Include="半透砖.cs" />
     <Compile Include="小人初始天赋点.cs" />
     <Compile Include="小人初始技能点.cs" />
     <Compile Include="小人工作速度.cs" />
     <Compile Include="建筑连结.cs" />
     <Compile Include="强制建造.cs" />
     <Compile Include="强制隔热.cs" />
+    <Compile Include="打印舱刷新速度.cs" />
     <Compile Include="按摩床恢复速度.cs" />
     <Compile Include="探云手.cs" />
     <Compile Include="控制台.cs" />
@@ -138,7 +141,7 @@
     <Compile Include="最后的基地.cs" />
     <Compile Include="末日浩劫.cs" />
     <Compile Include="树鼠种植密度.cs" />
-    <Compile Include="热得快.cs" />
+    <Compile Include="火箭采集速度.cs" />
     <Compile Include="物质大一统.cs" />
     <Compile Include="电线穿墙.cs" />
     <Compile Include="白嫖怪.cs" />
@@ -151,13 +154,16 @@
     <Compile Include="获得所有好特质.cs" />
     <Compile Include="蒸汽科技.cs" />
     <Compile Include="虚空入侵.cs" />
+    <Compile Include="虚空方块.cs" />
     <Compile Include="货舱扩容.cs" />
     <Compile Include="超时空传送.cs" />
+    <Compile Include="超级加热器.cs" />
     <Compile Include="辐射蜂巢耐热.cs" />
     <Compile Include="辐星高照.cs" />
     <Compile Include="铁砂掌.cs" />
     <Compile Include="幽灵门.cs" />
     <Compile Include="长臂猿.cs" />
+    <Compile Include="隔热线材.cs" />
     <Compile Include="高频电炉.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -170,8 +176,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cmd /k copy /y $(TargetDir)$(TargetName)$(TargetExt) $(SolutionDir)Mods\$(TargetName)\$(TargetName)$(TargetExt)
+    <PostBuildEvent>cmd /k copy /y $(TargetPath) $(SolutionDir)Mods\$(TargetName)\$(TargetFileName)
 cmd /k copy /y $(TargetDir)$(TargetName).pdb $(SolutionDir)Mods\$(TargetName)\$(TargetName).pdb
+$(SolutionDir)VersionUpdate\bin\Debug\VersionUpdate.exe $(SolutionDir)Mods\$(TargetName)\mod_info.yaml
 cmd /k $(SolutionDir)Mods\copy.bat</PostBuildEvent>
   </PropertyGroup>
 </Project>

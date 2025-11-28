@@ -22,8 +22,6 @@ public class GhostDoorConfig : IBuildingConfig
         EffectorValues none = NOISE_POLLUTION.NONE;
         BuildingDef buildingDef = BuildingTemplates.CreateBuildingDef(id, width, height, anim, hitpoints, construction_time, tier, all_METALS, melting_point, build_location_rule, BUILDINGS.DECOR.PENALTY.TIER1, none, 1f);
         buildingDef.Overheatable = false;
-        //buildingDef.RequiresPowerInput = true;
-        //buildingDef.EnergyConsumptionWhenActive = 120f;
         buildingDef.Floodable = false;
         buildingDef.Entombable = false;
         buildingDef.IsFoundation = true;

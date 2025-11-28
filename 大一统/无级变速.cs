@@ -12,25 +12,28 @@ namespace 大一统{
 	{
 		private static void Postfix(ref SpeedControlScreen __instance)
 		{
-				if (__instance.IsPaused)
-				{
-					Time.timeScale = 0f;
-					return;
-				}
-				if (__instance.GetSpeed() == 0)
-				{
-					Time.timeScale = __instance.normalSpeed;
-					return;
-				}
-				if (__instance.GetSpeed() == 1)
-				{
-					Time.timeScale = __instance.fastSpeed * 2;
-					return;
-				}
-				if (__instance.GetSpeed() == 2)
-				{
-					Time.timeScale = __instance.ultraSpeed * 4;
-				}
+			Time.timeScale *= 大一统.大一统控制台UI.Instance.无级变速;
+
+
+				//if (__instance.IsPaused)
+				//{
+				//	Time.timeScale = 0f;
+				//	return;
+				//}
+				//if (__instance.GetSpeed() == 0)
+				//{
+				//	Time.timeScale = __instance.normalSpeed;
+				//	return;
+				//}
+				//if (__instance.GetSpeed() == 1)
+				//{
+				//	Time.timeScale = __instance.fastSpeed * 2;
+				//	return;
+				//}
+				//if (__instance.GetSpeed() == 2)
+				//{
+				//	Time.timeScale = __instance.ultraSpeed * 4;
+				//}
 			
 		}
 	}

@@ -7,7 +7,7 @@ using UnityEngine;
 
 // Token: 0x020000B9 RID: 185
 namespace 大一统{
-	public class ExteriorWallConfig : IBuildingConfig
+	public class 方块墙Config : IBuildingConfig
 	{
 		// Token: 0x060002EB RID: 747 RVA: 0x0008C60C File Offset: 0x0008A80C
 		public override BuildingDef CreateBuildingDef()
@@ -48,7 +48,6 @@ namespace 大一统{
 			buildingDef.ObjectLayer = ObjectLayer.Backwall;
 			buildingDef.SceneLayer = Grid.SceneLayer.Backwall;
 			buildingDef.ReplacementLayer = ObjectLayer.ReplacementBackwall;
-			//buildingDef.Mass = new float[] { 666.66666666f };
 			buildingDef.ReplacementCandidateLayers = new List<ObjectLayer>
 		{
 			ObjectLayer.FoundationTile,
@@ -80,38 +79,35 @@ namespace 大一统{
 			GeneratedBuildings.RemoveLoopingSounds(go);
 		}
 
-		[AnyHarmonyPatch(typeof(BuildingComplete), "OnSpawn", ControlName: new string[] { nameof(大一统.大一统控制台UI.方块墙) })]
-		public static class 方块墙建造Patch
-		{
-			public static void Postfix(BuildingComplete __instance)
-			{
-				GameObject gameObject = __instance.gameObject;
-				if (__instance.Def.PrefabID == "方块墙")
-				{
 
-					PrimaryElement element = gameObject.GetComponent<PrimaryElement>();
-					float temperature = element.Temperature;
-
-					TracesExtesions.DeleteObject(gameObject);
-					SimMessages.ReplaceAndDisplaceElement(Grid.PosToCell(gameObject.transform.position), element.ElementID, null, __instance.Def.Mass[0], temperature, byte.MaxValue, 0, -1);
-				}
-			}
-
-		}
-		[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", ControlName: new string[] { nameof(大一统.大一统控制台UI.方块墙) })]
-		class 添加建筑
-		{
-			public static void Prefix()
-			{
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.NAME", "方块墙" });
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.EFFECT", "方块墙" });
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.DESC", "建造一个自然土块" });
-					ModUtil.AddBuildingToPlanScreen("Base", "方块墙");
-				
-			}
-		}
 
 		public const string ID = "方块墙";
 
     }
+	[AnyHarmonyPatch(typeof(BuildingComplete), "OnSpawn", Postfix: nameof(OnSpawn) ,ControlName: new string[] { nameof(大一统.大一统控制台UI.方块墙) })]
+	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", Prefix: nameof(LoadGeneratedBuildings), ControlName: new string[] { nameof(大一统.大一统控制台UI.方块墙) })]
+	class 方块墙
+	{
+		public static void OnSpawn(BuildingComplete __instance)
+		{
+			GameObject gameObject = __instance.gameObject;
+			if (__instance.Def.PrefabID == "方块墙")
+			{
+
+				PrimaryElement element = gameObject.GetComponent<PrimaryElement>();
+				float temperature = element.Temperature;
+
+				TracesExtesions.DeleteObject(gameObject);
+				SimMessages.ReplaceAndDisplaceElement(Grid.PosToCell(gameObject.transform.position), element.ElementID, null, __instance.Def.Mass[0], temperature, byte.MaxValue, 0, -1);
+			}
+		}
+		public static void LoadGeneratedBuildings()
+		{
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.NAME", "方块墙" });
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.EFFECT", "方块墙" });
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.方块墙.DESC", "建造一个自然土块" });
+			ModUtil.AddBuildingToPlanScreen("Base", "方块墙");
+
+		}
+	}
 }

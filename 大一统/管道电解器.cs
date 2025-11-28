@@ -38,6 +38,8 @@ namespace 大一统{
                 conduitDispenser.elementFilter = new SimHashes[] { SimHashes.Hydrogen };
                 conduitDispenser.alwaysDispense = true;
                 conduitDispenser.useSecondaryOutput = true;
+                Electrolyzer electrolyzer = go.AddOrGet<Electrolyzer>();
+                electrolyzer.maxMass = float.MaxValue;
             });
             GlobalBuildingConfig.DoPostConfigureComplete<ElectrolyzerConfig>(null, (config, go) =>
             {

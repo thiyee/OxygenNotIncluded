@@ -6,7 +6,7 @@ using TUNING;
 using UnityEngine;
 
 namespace 大一统{
-	public class AutoMinerWall : StateMachineComponent<AutoMinerWall.Instance>, ISim1000ms{
+	public class AutoMinerWall : StateMachineComponent<AutoMinerWall.Instance>,ISim200ms{
 		int digcell;
 		public float damage;
 
@@ -17,12 +17,14 @@ namespace 大一统{
 			digcell = Grid.PosToCell(gameObject);
 
 		}
-		public void Sim1000ms(float dt)
-		{
-            if (Grid.Element[digcell].IsSolid){
+        public void Sim200ms(float dt)
+        {
+			if (Grid.Element[digcell].IsSolid)
+			{
 				Diggable.DoDigTick(digcell, damage, WorldDamage.DamageType.NoBuildingDamage);
 			}
 		}
+
 		public class Instance : GameStateMachine<AutoMinerWall.States, AutoMinerWall.Instance, AutoMinerWall, object>.GameInstance
 		{
 			public Instance(AutoMinerWall master) : base(master)
@@ -43,7 +45,7 @@ namespace 大一统{
 	}
 
 
-	public class AutoDiggingWallConfig : IBuildingConfig
+	public class 自动挖掘墙Config : IBuildingConfig
 	{
 		// Token: 0x060002EB RID: 747 RVA: 0x0008C60C File Offset: 0x0008A80C
 		public override BuildingDef CreateBuildingDef()
@@ -101,18 +103,20 @@ namespace 大一统{
 			AutoMinerWall autoMiner = go.AddOrGet<AutoMinerWall>();
 			autoMiner.damage = 10;
 		}
-		[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", ControlName: new string[] { nameof(大一统.大一统控制台UI.自动挖掘墙) })]
-		class 添加建筑
-		{
-			public static void Prefix()
-			{
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.NAME", "自动挖掘墙" });
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.EFFECT", "自动挖掘墙" });
-					Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.DESC", "自动挖掘覆盖在其上的固体" });
-					ModUtil.AddBuildingToPlanScreen("Base", "自动挖掘墙");
-				
-			}
-		}
+
 		public const string ID = "自动挖掘墙";
+	}
+
+	[AnyHarmonyPatch(typeof(GeneratedBuildings), "LoadGeneratedBuildings", Prefix: nameof(LoadGeneratedBuildings), ControlName: new string[] { nameof(大一统.大一统控制台UI.自动挖掘墙) })]
+	class 自动挖掘墙
+	{
+		public static void LoadGeneratedBuildings()
+		{
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.NAME", "自动挖掘墙" });
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.EFFECT", "自动挖掘墙" });
+			Strings.Add(new string[] { "STRINGS.BUILDINGS.PREFABS.自动挖掘墙.DESC", "自动挖掘覆盖在其上的固体" });
+			ModUtil.AddBuildingToPlanScreen("Base", "自动挖掘墙");
+
+		}
 	}
 }

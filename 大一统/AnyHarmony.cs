@@ -27,7 +27,7 @@ public class AnyHarmonyPatch : Attribute
     //当AnyHarmony传递Control实例时 允许指定一个类的某字段或属性 该字段或属性应具有[DefaultValue(value)]特性 当该字段或属性值等于DefaultValue值时 则不应用此patch 
     public string[] ControlName { get; set; }
 
-    public AnyHarmonyPatch(Type targetType, string methodName, string Prefix = null, string Postfix = null, string Transpiler = null, string Finalizer = null, string Replace = null, string ExecuteOnInit = null, Type[] ArgumentTypes=null,string[] ControlName=null)
+    public AnyHarmonyPatch(Type targetType, string methodName, string Prefix = null, string Postfix = null, string Transpiler = null, string Finalizer = null, string Replace = null, string ExecuteOnInit = null, Type[] ArgumentTypes = null, string[] ControlName = null)
     {
         TargetType = targetType;
         MethodName = methodName;
@@ -50,7 +50,7 @@ public class AnyHarmony : IDisposable
     private readonly Assembly _assembly;
     private readonly object ControlInstance;
 
-    public AnyHarmony(Harmony harmony, Assembly assembly,object ControlInstance)
+    public AnyHarmony(Harmony harmony, Assembly assembly, object ControlInstance)
     {
         Debugger.Break();
         _harmony = harmony;
@@ -68,10 +68,30 @@ public class AnyHarmony : IDisposable
             throw;
         }
     }
+    private string GetMethodName(MemberInfo memberInfo)
+    {
+        MethodInfo method = memberInfo as MethodInfo;
+        if(method is null)
+        {
+            return "";
+        }
+        if (method.IsSpecialName)
+        {
+            if (method.Name.StartsWith("get_"))
+                return method.Name.Substring(4);
+            else if (method.Name.StartsWith("set_"))
+                return method.Name.Substring(4);
+            else
+                return method.Name; // 其他特殊方法（如事件add/remove）
+        }
+        return method.Name;
+
+    }
     private MethodType GetMethodType(MemberInfo memberInfo)
     {
         switch (memberInfo)
         {
+
             case MethodInfo method:
                 if (method.IsSpecialName)
                 {
@@ -95,18 +115,18 @@ public class AnyHarmony : IDisposable
                 break;
 
             default:
-                throw new NotSupportedException($"不支持的方法类型: {memberInfo}");
+                throw new NotSupportedException($"不支持的方法类型:{memberInfo.GetType()?.Name} {memberInfo}");
         }
     }
     private Type[] GetArgumentTypes(MemberInfo memberInfo)
     {
-        if(memberInfo is MethodBase m)
+        if (memberInfo is MethodBase m)
         {
             return m.GetParameters().Select(n => n.ParameterType).ToArray();
         }
         throw new NotSupportedException($"不支持的类型: {memberInfo.MemberType}");
     }
-    private bool FuncIsArgumentTypes(MemberInfo memberInfo,Type[] ArgumentTypes)
+    private bool FuncIsArgumentTypes(MemberInfo memberInfo, Type[] ArgumentTypes)
     {
         return (memberInfo is MethodBase method && method.GetParameters().Select(p => p.ParameterType).ToArray().SequenceEqual(ArgumentTypes));
 
@@ -120,10 +140,11 @@ public class AnyHarmony : IDisposable
 
             foreach (var @AnyHarmonyPatch in AnyHarmonyPatchs)
             {
-                if (ControlInstance != null&& @AnyHarmonyPatch.ControlName!=null)
+                if (ControlInstance != null && @AnyHarmonyPatch.ControlName != null)
                 {
                     bool Enabled = false;
-                    foreach(var Control in @AnyHarmonyPatch.ControlName.Select(name=> ControlInstance.GetType().GetProperty(name))){
+                    foreach (var Control in @AnyHarmonyPatch.ControlName.Select(name => ControlInstance.GetType().GetProperty(name)))
+                    {
                         var DefaultValue = Control.GetCustomAttribute<DefaultValueAttribute>();
                         if (Control != null)
                         {   //任何一个控制启用 都执行patch
@@ -153,7 +174,7 @@ public class AnyHarmony : IDisposable
                 //ApplyPatch(@AnyHarmonyPatch.TargetType, @AnyHarmonyPatch.MethodName, prefix, postfix, transpiler, finalizer, replace);
                 //continue;
 
-                var PatchedMethods = @AnyHarmonyPatch.TargetType.GetMembers(AccessTools.all).Where(m=>m.Name== @AnyHarmonyPatch.MethodName).ToArray();
+                var PatchedMethods = @AnyHarmonyPatch.TargetType.GetMembers(AccessTools.all).Where(m => m.Name == @AnyHarmonyPatch.MethodName).ToArray();
                 if (PatchedMethods.Count() <= 0)
                 {
                     throw new MissingMethodException($"Method {@AnyHarmonyPatch.MethodName} not found in {@AnyHarmonyPatch.TargetType.FullName}");
@@ -182,7 +203,7 @@ public class AnyHarmony : IDisposable
                         Console.WriteLine($"Patched: {PatchedMethod.DeclaringType?.Name}.{PatchedMethod.Name}=>{replace.declaringType?.Name}.{replace.method?.Name}");
 
                     }
-                    else if ((prefix?? postfix?? transpiler?? finalizer)!=null)
+                    else if ((prefix ?? postfix ?? transpiler ?? finalizer) != null)
                     {
                         var patchMethods = Activator.CreateInstance(PatchClassProcessor_patchMethods.FieldType) as IList;
                         object AttributePatch;
@@ -191,7 +212,7 @@ public class AnyHarmony : IDisposable
                             AttributePatch = AttributePatch_Constructor();
                             AttributePatch_info.SetValue(AttributePatch, prefix);
                             prefix.declaringType = PatchedMethod.DeclaringType;
-                            prefix.methodName = PatchedMethod.Name;
+                            prefix.methodName = GetMethodName(PatchedMethod);
                             prefix.methodType = GetMethodType(PatchedMethod);
                             prefix.argumentTypes = GetArgumentTypes(PatchedMethod);
                             AttributePatch_type.SetValue(AttributePatch, HarmonyPatchType.Prefix);
@@ -202,7 +223,7 @@ public class AnyHarmony : IDisposable
                             AttributePatch = AttributePatch_Constructor();
                             AttributePatch_info.SetValue(AttributePatch, postfix);
                             postfix.declaringType = PatchedMethod.DeclaringType;
-                            postfix.methodName = PatchedMethod.Name;
+                            postfix.methodName = GetMethodName(PatchedMethod);
                             postfix.methodType = GetMethodType(PatchedMethod);
                             postfix.argumentTypes = GetArgumentTypes(PatchedMethod);
                             AttributePatch_type.SetValue(AttributePatch, HarmonyPatchType.Postfix);
@@ -213,7 +234,7 @@ public class AnyHarmony : IDisposable
                             AttributePatch = AttributePatch_Constructor();
                             AttributePatch_info.SetValue(AttributePatch, transpiler);
                             transpiler.declaringType = PatchedMethod.DeclaringType;
-                            transpiler.methodName = PatchedMethod.Name;
+                            transpiler.methodName = GetMethodName(PatchedMethod);
                             transpiler.methodType = GetMethodType(PatchedMethod);
                             transpiler.argumentTypes = GetArgumentTypes(PatchedMethod);
                             AttributePatch_type.SetValue(AttributePatch, HarmonyPatchType.Transpiler);
@@ -224,7 +245,7 @@ public class AnyHarmony : IDisposable
                             AttributePatch = AttributePatch_Constructor();
                             AttributePatch_info.SetValue(AttributePatch, finalizer);
                             finalizer.declaringType = PatchedMethod.DeclaringType;
-                            finalizer.methodName = PatchedMethod.Name;
+                            finalizer.methodName = GetMethodName(PatchedMethod);
                             finalizer.methodType = GetMethodType(PatchedMethod);
                             finalizer.argumentTypes = GetArgumentTypes(PatchedMethod);
                             AttributePatch_type.SetValue(AttributePatch, HarmonyPatchType.Finalizer);
@@ -235,19 +256,30 @@ public class AnyHarmony : IDisposable
                         var containerAttributes = new HarmonyMethod();
                         containerAttributes.method = null;
                         containerAttributes.declaringType = PatchedMethod.DeclaringType;
-                        containerAttributes.methodName = PatchedMethod.Name;
+                        containerAttributes.methodName = GetMethodName(PatchedMethod);
                         containerAttributes.methodType = GetMethodType(PatchedMethod);
                         PatchClassProcessor_containerAttributes.SetValue(patchClassProcessor, containerAttributes);
                         PatchClassProcessor_auxilaryMethods.SetValue(patchClassProcessor, new Dictionary<Type, MethodInfo>());
                         try
                         {
-                            patchClassProcessor.Patch();
+                            var result = patchClassProcessor.Patch();
                             var PatchMethod = prefix ?? postfix ?? transpiler ?? finalizer;
-                            foreach(var p in patchMethods)
-                            {
-                                Console.WriteLine($"Patched: {PatchedMethod.DeclaringType?.Name}.{PatchedMethod.Name}=>[{AttributePatch_type.GetValue(p)}|{((HarmonyMethod)AttributePatch_info.GetValue(p)).methodType}]:{PatchMethod.method?.DeclaringType.Name}.{PatchMethod.method?.Name}");
 
+                            foreach (var p in patchMethods)
+                            {
+
+                                if (result == null || result.Count == 0)
+                                {
+                                    Console.WriteLine($"Patch Failed: {PatchedMethod.DeclaringType?.Name}.{PatchedMethod.Name}=>[{AttributePatch_type.GetValue(p)}|{((HarmonyMethod)AttributePatch_info.GetValue(p)).methodType}]:{PatchMethod.method?.DeclaringType.Name}.{PatchMethod.method?.Name}");
+                                }
+                                else
+                                {
+                                    Console.WriteLine($"Patched: {PatchedMethod.DeclaringType?.Name}.{PatchedMethod.Name}=>[{AttributePatch_type.GetValue(p)}|{((HarmonyMethod)AttributePatch_info.GetValue(p)).methodType}]:{PatchMethod.method?.DeclaringType.Name}.{PatchMethod.method?.Name}");
+
+                                }
                             }
+
+
 
                         }
                         catch (Exception ex)

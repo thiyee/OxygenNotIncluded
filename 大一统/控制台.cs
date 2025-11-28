@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Reflection;
 using System.Diagnostics;
 using System.ComponentModel;
+using System;
 
 namespace 大一统{
     [JsonObject(MemberSerialization.OptIn)]    
@@ -20,7 +21,9 @@ namespace 大一统{
         [Option("入侵程度", "控制被替换的生态占总生态的多少 初始生态不会被替换", "地图特质", Format = "F2") ][Limit(0.0, 1.0) ][JsonProperty] public  float 虚空入侵程度 { get; set; }
         [Option("辐星高照", "控制主世界太空辐射浓度", "地图特质", Format = "F2") ][Limit(1.0, 30.0) ][JsonProperty] [DefaultValue(1.0f)] public  float 辐星高照 { get; set; }
 
+        [Option("单透砖", "气体或液体仅从一个方向透过", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 单透砖 { get; set; }
         [Option("方块墙", "建造一个自然土块", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 方块墙 { get; set; }
+        [Option("虚空方块", "使当前位置成为太空暴露,重复建造可移除", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 虚空方块 { get; set; }
         [Option("自动挖掘墙", "挖掘在其上的固体", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 自动挖掘墙 { get; set; }
         [Option("动物猎场", "自动处死进入的动物 可通过信号控制", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 动物猎场 { get; set; }
         [Option("幽灵门", "复制人可通过 但气体与液体不可通过的门", "新的建筑") ][JsonProperty] [DefaultValue(false)]public  bool 幽灵门 { get; set; }
@@ -41,7 +44,9 @@ namespace 大一统{
         [Option("储物箱容量", "储物箱容量(吨)", "新建筑特性", Format = "F0") ][Limit(20, float.MaxValue) ][JsonProperty] [DefaultValue(20.0f)] public  float 储物箱容量 { get; set; }
         [Option("蒸汽时代", "蒸汽机能吸取速度*5 过热温度=200℃ 发热降低90%", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 蒸汽时代 { get; set; }
         [Option("强制隔热", "隔热砖 液体/气体管道 不发生热交换", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 强制隔热 { get; set; }
+        [Option("隔热线材", "线材类建筑不会发生换热", "新建筑特性") ][JsonProperty] [DefaultValue(false)]public  bool 隔热线材 { get; set; }
         [Option("货舱扩容", "火箭上的所有类型货舱容量增加 百分比", "新建筑特性") ][JsonProperty] [Limit(100, 10000)] [DefaultValue(100)]public  int 货舱扩容 { get; set; }
+        [Option("超级加热器", "液体/空间加热器效率提升(温度上限提升)", "新建筑特性") ][JsonProperty][DefaultValue(false)]public bool 超级加热器 { get; set; }
 
         [Option("动物更耐高低温", "扩展动物的温度范围 单位[倍]", "功能性修改") ][JsonProperty] [Limit(0, 10)] [DefaultValue(0.0f)] public  float 动物更耐高低温 { get; set; }
         [Option("辐射蜂巢耐热", "辐射蜂巢能在常温下生存", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 辐射蜂巢耐热 { get; set; }
@@ -51,7 +56,7 @@ namespace 大一统{
         [Option("获得所有好特质", "小人获得所有好特质", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 获得所有好特质 { get; set; }
         [Option("精准采集", "挖掘矿物掉落全部质量", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 精准采集 { get; set; }
         [Option("树鼠种植密度", "树鼠种植更快 密度更高", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 树鼠种植密度 { get; set; }
-        [Option("无级变速", "游戏中速*2 快速*4", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 无级变速 { get; set; }
+        [Option("无级变速", "自定义游戏速度", "功能性修改") ][JsonProperty] [Limit(1f, 10f)] [DefaultValue(1f)]public  float 无级变速 { get; set; }
         [Option("无限拖把", "拖把无视液体质量", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 无限拖把 { get; set; }
         [Option("自动收获", "植物成熟后自动掉落", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 自动收获 { get; set; }
         [Option("强制建造", "按住SHIFT键强制部署建造蓝图", "功能性修改") ][JsonProperty] [DefaultValue(false)]public  bool 强制建造 { get; set; }
@@ -71,20 +76,22 @@ namespace 大一统{
 
 
         [Option("修改泉属性", "控制以下三项是否生效", "属性控制") ][JsonProperty] [DefaultValue(false)]public bool 修改泉属性 { get; set; }
-        [Option("喷发量", "", "属性控制", Format = "F2") ][Limit(0.0, 10.0) ][JsonProperty] public  float 喷发量 { get; set; }
+        [Option("喷发量", "", "属性控制", Format = "F2") ][Limit(0.0, 1000.0) ][JsonProperty] public  float 喷发量 { get; set; }
         [Option("喷发期占比", "喷发时间/闲置时间", "属性控制", Format = "F2") ][Limit(0.0, 1.0) ][JsonProperty] public  float 喷发期占比 { get; set; }
         [Option("活跃期占比", "活跃时间/休眠时间", "属性控制", Format = "F2") ][Limit(0.0, 1.0) ][JsonProperty] public  float 活跃期占比 { get; set; }
-        [Option("动物驯化速度", "加速/减速以任何形式对动物的驯化速度", "属性控制", Format = "F2") ][Limit(0.0, 10.0) ][JsonProperty] [DefaultValue(0f)] public  float 驯化速度 { get; set; }
-        [Option("植物生长速度", "加速/减速任何植物的生长速度", "属性控制", Format = "F2") ][Limit(0.0, 10.0) ][JsonProperty] [DefaultValue(0f)] public  float 植物生长速度 { get; set; }
-        [Option("动物产蛋速度", "加速被驯化的动物的产蛋速度", "属性控制", Format = "F2") ][Limit(0.0, 1000.0) ][JsonProperty] [DefaultValue(0f)] public  float 动物产蛋速度 { get; set; }
+        [Option("动物驯化速度", "加速/减速以任何形式对动物的驯化速度", "属性控制", Format = "F2") ][Limit(1, 10.0) ][JsonProperty] [DefaultValue(1f)] public  float 驯化速度 { get; set; }
+        [Option("植物生长速度", "加速/减速任何植物的生长速度", "属性控制", Format = "F2") ][Limit(1, 10.0) ][JsonProperty] [DefaultValue(1f)] public  float 植物生长速度 { get; set; }
+        [Option("动物产蛋速度", "加速被驯化的动物的产蛋速度", "属性控制", Format = "F2") ][Limit(1, 1000.0) ][JsonProperty] [DefaultValue(1f)] public  float 动物产蛋速度 { get; set; }
         [Option("种子掉落概率", "增加种子额外的掉落概率", "属性控制", Format = "F2") ][Limit(0, 100) ][JsonProperty] [DefaultValue(0)] public  int 种子掉落概率 { get; set; }
-        [Option("孵化速度", "加速/减速任何蛋的孵化速度", "属性控制", Format = "F2") ][Limit(0.0, 1000.0) ][JsonProperty] [DefaultValue(0f)] public  float 孵化速度 { get; set; }
+        [Option("孵化速度", "加速/减速任何蛋的孵化速度", "属性控制", Format = "F2") ][Limit(1.0, 1000.0) ][JsonProperty] [DefaultValue(1f)] public  float 孵化速度 { get; set; }
         [Option("物质导热系数", "实际导热率=原导热率*物质导热系数", "属性控制", Format = "F2") ][Limit(1.0, 1000.0) ][JsonProperty] [DefaultValue(1f)] public  float 物质导热系数 { get; set; }
-        [Option("最低结块质量", "当结块质量小于最低结块质量时 实际结块质量为最低结块质量", "属性控制", Format = "F2") ][Limit(0.0, 10000.0) ][JsonProperty] [DefaultValue(0f)] public  float 最低结块质量 { get; set; }
+        [Option("最低结块质量", "当结块质量小于最低结块质量时 实际结块质量为最低结块质量", "属性控制", Format = "F2") ][Limit(0f, 500f) ][JsonProperty] [DefaultValue(0f)] public  float 最低结块质量 { get; set; }
+        [Option("打印舱刷新速度", "打印舱刷新速度", "属性控制", Format = "F2") ][Limit(1f, 20f) ][JsonProperty] [DefaultValue(1f)] public  float 打印舱刷新速度 { get; set; }
+        [Option("火箭采集速度", "调整火箭在资源带上的采集速度", "属性控制", Format = "F2") ][Limit(1f, 100f) ][JsonProperty] [DefaultValue(1f)] public  float 火箭采集速度 { get; set; }
 
         [Option("小人初始技能点", "控制小人在被打印或创建时获取的用于学习技能的技能点", "属性控制") ][Limit(0, 1000) ][JsonProperty] [DefaultValue(0)] public  int 小人初始技能点 { get; set; }
         [Option("小人初始天赋点", "允许你控制小人各项属性的初始点数", "属性控制") ][Limit(0, 100) ][JsonProperty] [DefaultValue(0)] public  int 小人初始天赋点 { get; set; }
-        [Option("小人工作速度", "控制小人工作速度 数值越大 工作速度越快", "属性控制") ][Limit(0, 10) ][JsonProperty] [DefaultValue(0)] public  int 小人工作速度 { get; set; }
+        [Option("小人工作速度", "控制小人工作速度 数值越大 工作速度越快", "属性控制") ][Limit(0, 100) ][JsonProperty] [DefaultValue(0)] public  int 小人工作速度 { get; set; }
 
         public 大一统控制台UI()
         {
@@ -107,7 +114,8 @@ namespace 大一统{
 
             PUtil.InitLibrary(true);
             new POptions().RegisterOptions(this, typeof(大一统控制台UI));
-            
+
+
             base.OnLoad(harmony);
             new AnyHarmony(harmony, base.assembly, 大一统控制台UI.Instance);
 

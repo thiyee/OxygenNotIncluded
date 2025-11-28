@@ -21,7 +21,6 @@ namespace 大一统{
 				{
 					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Beckoning.deltaAttribute.Id, 大一统.大一统控制台UI.Instance.动物产蛋速度 * 0.2F, STRINGS.CREATURES.MODIFIERS.AGE.NAME, false, false, true));
 					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Fertility.deltaAttribute.Id, 大一统.大一统控制台UI.Instance.动物产蛋速度, STRINGS.CREATURES.MODIFIERS.TAME.NAME, true, false, true));
-					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Age.deltaAttribute.Id, 0.0016666667f* 大一统.大一统控制台UI.Instance.动物产蛋速度*0.4F, STRINGS.CREATURES.MODIFIERS.AGE.NAME, false, false, true));
 
 				}
 			}
