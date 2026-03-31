@@ -24,6 +24,14 @@ namespace 大一统{
 
 				}
 			}
+            if (__instance.Id == "IsABaby")
+            {
+				bool needtoadd =!__instance.SelfModifiers.Exists(e => e.AttributeId == Db.Get().Amounts.Age.deltaAttribute.Id);
+				if (大一统.大一统控制台UI.Instance.动物产蛋速度 != 0 && needtoadd)
+				{
+					__instance.Add(new Klei.AI.AttributeModifier(Db.Get().Amounts.Age.deltaAttribute.Id, 大一统.大一统控制台UI.Instance.动物产蛋速度 * 0.0001F, STRINGS.CREATURES.MODIFIERS.AGE.NAME, false, false, true));
+				}
+			}
 		}
 		private static void AttributeModifier(string attribute_id, ref float value)
 		{

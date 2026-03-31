@@ -149,11 +149,11 @@ public class Plantable : Workable
         {
             return false;
         }
-        DrowningMonitor component2 = prefab.GetComponent<DrowningMonitor>();
-        if (component2 != null && !component2.IsCellSafe(cell))
-        {
-            return false;
-        }
+        //DrowningMonitor component2 = prefab.GetComponent<DrowningMonitor>();
+        //if (component2 != null && !component2.IsCellSafe(cell))
+        //{
+        //    return false;
+        //}
         UprootedMonitor component4 = prefab.GetComponent<UprootedMonitor>();
         if (component4 != null && !component4.IsSuitableFoundation(cell))
         {

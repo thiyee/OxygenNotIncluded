@@ -142,6 +142,10 @@ namespace 大一统
 
                         // 计算需要的热能
                         float heatEnergy = Grid.Element[cell].specificHeatCapacity * Grid.Mass[cell] * tempDelta * 1000f;
+                        if (Grid.Element[cell].thermalConductivity == 0f)
+                        {
+                            heatEnergy = 0f;
+                        }
 
                         SimMessages.ModifyEnergy(cell, kilojoules: heatEnergy / 1000f, targetTemp, SimMessages.EnergySourceID.StructureTemperature);
                         smi.master.CellHeatData[i, j] = heatEnergy;
@@ -464,6 +468,7 @@ namespace 大一统
             GlobalBuildingConfig.CreateBuildingDef<SpaceHeaterConfig>(null, (config, def) =>
             {
                 def.Overheatable = false;
+                def.Floodable = false;
                 def.OverheatTemperature = 10000f;
                 def.ExhaustKilowattsWhenActive = 0f;
                 def.SelfHeatKilowattsWhenActive = 0f;

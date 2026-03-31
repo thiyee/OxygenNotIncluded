@@ -29,9 +29,12 @@ namespace 大一统
                 }
                 if (entry.elementId == "TempConductorSolid") entry.highTemp += 3000;
                 if (entry.elementId == "Ceramic") entry.highTemp += 5000;
-                if (entry.elementId == "SuperInsulator") entry.thermalConductivity = 0f;
+                if (entry.elementId == "SuperInsulator") {
+                    entry.thermalConductivity = 0f;
+                }
                 if (entry.elementId == "MoltenUranium") entry.lowTempTransitionTarget = "EnrichedUranium";
-                if (entry.elementId == "SuperCoolant") { entry.highTemp = 10000f; entry.specificHeatCapacity *= 30.0f; }
+                if (entry.elementId == "SuperCoolant") { entry.highTemp = 9273.15f; entry.specificHeatCapacity *= 30.0f; }
+                if (entry.elementId == "SuperCoolantGas") { entry.lowTemp = 9273.15f; entry.specificHeatCapacity *= 30.0f; }
                 if (entry.elementId == "ViscoGel") { entry.lowTemp = 20.15f; }
             }
             if (entry.tags == null)

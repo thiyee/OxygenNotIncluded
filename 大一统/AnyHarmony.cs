@@ -24,21 +24,33 @@ public class AnyHarmonyPatch : Attribute
     public Type[] ArgumentTypes { get; set; }
 
 
-    //当AnyHarmony传递Control实例时 允许指定一个类的某字段或属性 该字段或属性应具有[DefaultValue(value)]特性 当该字段或属性值等于DefaultValue值时 则不应用此patch 
+    //当AnyHarmony传递ControlInstance时 允许指定一个类的某字段或属性 该字段或属性应具有[DefaultValue(value)]特性 当该字段或属性值等于DefaultValue值时 则不应用此patch 
     public string[] ControlName { get; set; }
 
-    public AnyHarmonyPatch(Type targetType, string methodName, string Prefix = null, string Postfix = null, string Transpiler = null, string Finalizer = null, string Replace = null, string ExecuteOnInit = null, Type[] ArgumentTypes = null, string[] ControlName = null)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="targetType">需要被patch的目标类型实例</param>
+    /// <param name="methodName">在目标类型中的方法名 可以为</param>
+    /// <param name="Prefix">与HarmonyPatch相同</param>
+    /// <param name="Postfix">与HarmonyPatch相同</param>
+    /// <param name="Transpiler">与HarmonyPatch相同</param>
+    /// <param name="Finalizer">与HarmonyPatch相同</param>
+    /// <param name="ExecuteOnInit">不做任何patch动作 targetType与methodName参数被无视 在AnyHarmony被实例化时调用</param>
+    /// <param name="ArgumentTypes">如果targetType中有多个methodName重载 此参数用以区分具体要patch哪个方法</param>
+    /// <param name="ControlName">多参数 可选 在ControlInstance中如果对应ControlName不为其默认值 则应用此patch</param>
+    public AnyHarmonyPatch(Type targetType, string methodName, string Prefix = null, string Postfix = null, string Transpiler = null, string Finalizer = null,  string ExecuteOnInit = null, Type[] ArgumentTypes = null, string[] ControlName = null)
     {
-        TargetType = targetType;
-        MethodName = methodName;
-        this.Prefix = Prefix;
-        this.Postfix = Postfix;
-        this.Transpiler = Transpiler;
-        this.Finalizer = Finalizer;
-        this.Replace = Replace;
-        this.ExecuteOnInit = ExecuteOnInit;
-        this.ArgumentTypes = ArgumentTypes;
-        this.ControlName = ControlName;
+        TargetType = targetType;            
+        MethodName = methodName;            
+        this.Prefix = Prefix;               
+        this.Postfix = Postfix;             
+        this.Transpiler = Transpiler;       
+        this.Finalizer = Finalizer;         
+        this.Replace = Replace;             
+        this.ExecuteOnInit = ExecuteOnInit; 
+        this.ArgumentTypes = ArgumentTypes; 
+        this.ControlName = ControlName;     
     }
 }
 
@@ -197,13 +209,13 @@ public class AnyHarmony : IDisposable
                             continue;
                     }
                     PatchClassProcessor patchClassProcessor = new PatchClassProcessor(_harmony, type);
-                    if (replace != null)
+                    /*if (replace != null)
                     {
                         Memory.DetourMethod(PatchedMethod as MethodBase, replace.method);
                         Console.WriteLine($"Patched: {PatchedMethod.DeclaringType?.Name}.{PatchedMethod.Name}=>{replace.declaringType?.Name}.{replace.method?.Name}");
 
                     }
-                    else if ((prefix ?? postfix ?? transpiler ?? finalizer) != null)
+                    else */if ((prefix ?? postfix ?? transpiler ?? finalizer) != null)
                     {
                         var patchMethods = Activator.CreateInstance(PatchClassProcessor_patchMethods.FieldType) as IList;
                         object AttributePatch;
@@ -361,7 +373,8 @@ public class AnyHarmony : IDisposable
                         throw new Exception("Patche method not found");
 
                     }
-                    Memory.DetourMethod(method, replace.method);
+                    
+                    /*Memory.DetourMethod(method, replace.method);*/
                 }
                 else
                 {
